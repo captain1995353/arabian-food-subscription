@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-bg text-ink font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  /* Form controls share a consistent dark look */
+  input,
+  select,
+  textarea {
+    @apply w-full rounded-lg bg-bg-surface border border-teal/20 px-4 py-2.5 text-ink
+           placeholder:text-ink-muted outline-none transition
+           focus:border-gold focus:ring-2 focus:ring-gold/20;
+  }
+
+  label {
+    @apply block text-sm font-medium text-ink-secondary mb-1.5;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-gold bg-clip-text text-transparent;
+  }
+
+  .card {
+    @apply rounded-2xl border border-teal/15 bg-bg-card p-5 shadow-card;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+           text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-gradient-warm text-white shadow-teal hover:brightness-110;
+  }
+  .btn-gold {
+    @apply bg-gold text-bg hover:bg-gold-light;
+  }
+  .btn-outline {
+    @apply border border-gold/60 text-gold hover:bg-gold/10;
+  }
+  .btn-ghost {
+    @apply text-ink-secondary hover:text-gold;
+  }
+  .btn-danger {
+    @apply bg-spice/90 text-white hover:bg-spice;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold;
+  }
+
+  .input-error {
+    @apply text-spice text-xs mt-1;
+  }
+}
+
+/* Hide number input spinners for cleaner price fields */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

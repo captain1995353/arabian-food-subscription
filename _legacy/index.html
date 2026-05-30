@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabiana – Indian • Arabian • Korean Fusion Restaurant</title>
+    <meta name="description" content="Arabiana brings together the bold flavors of India, Arabia, and Korea in one extraordinary dining experience. Famous for our Arabian Kabsa, Korean Fried Chicken, and Kangjeong Chicken.">
+    <meta name="keywords" content="Arabiana, fusion restaurant, Arabian Kabsa, Korean Fried Chicken, Kangjeong Chicken, Indian cuisine, Arabian food, Korean food">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== PRELOADER ===== -->
+    <div id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-logo">ARABIANA</div>
+            <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo" id="nav-logo">
+                <img src="logo.jpeg" alt="Arabiana Logo" class="nav-logo-img">
+                ARABIANA
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#hero" class="nav-link active" data-section="hero">Home</a></li>
+                <li><a href="#about" class="nav-link" data-section="about">Our Story</a></li>
+                <li><a href="#specialties" class="nav-link" data-section="specialties">Specialties</a></li>
+                <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
+                <li><a href="#gallery" class="nav-link" data-section="gallery">Gallery</a></li>
+                <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+            </ul>
+            <a href="#reserve" class="nav-cta" id="nav-reserve-btn">Reserve a Table</a>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="hero" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-particles" id="hero-particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge" data-animate="fade-down">
+                <span class="badge-line"></span>
+                <span>Indian • Arabian • Korean</span>
+                <span class="badge-line"></span>
+            </div>
+            <h1 class="hero-title" data-animate="fade-up">
+                <span class="hero-line">Where Three</span>
+                <span class="hero-line hero-accent">Culinary Worlds</span>
+                <span class="hero-line">Become One</span>
+            </h1>
+            <p class="hero-subtitle" data-animate="fade-up" data-delay="200">
+                Experience an extraordinary fusion of flavors from India, Arabia, and Korea — crafted with passion, served with love.
+            </p>
+            <div class="hero-actions" data-animate="fade-up" data-delay="400">
+                <a href="#menu" class="btn btn-primary" id="hero-menu-btn">
+                    <span>Explore Menu</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#reserve" class="btn btn-outline" id="hero-reserve-btn">
+                    <span>Reserve a Table</span>
+                </a>
+            </div>
+            <div class="hero-stats" data-animate="fade-up" data-delay="600">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="3">0</span>
+                    <span class="stat-label">Cuisines United</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="50">0</span>
+                    <span class="stat-label">Signature Dishes</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="12">0</span>
+                    <span class="stat-label">Years of Flavor</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about" class="about-section section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">✦ Our Story</span>
+                <h2 class="section-title">A Journey Across <br><span class="text-gradient">Three Continents</span></h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-image" data-animate="fade-right">
+                    <img src="inside.jpeg" alt="Arabiana restaurant interior with warm wood accents and teal wall" loading="lazy">
+                    <div class="about-image-accent"></div>
+                </div>
+                <div class="about-content" data-animate="fade-left">
+                    <p class="about-lead">
+                        Born from a love of bold spices, fragrant rice, and the art of gathering around a table — <strong>Arabiana</strong> is a culinary celebration where India meets Arabia meets Korea.
+                    </p>
+                    <p>
+                        Our chefs draw from centuries of culinary tradition — the aromatic depth of Indian curries, the soul-warming richness of Arabian Kabsa, and the addictive crunch of Korean fried chicken — to create something entirely new yet deeply familiar.
+                    </p>
+                    <p>
+                        Every dish at Arabiana tells a story of heritage, innovation, and the universal language of great food. We believe the best meals are not just eaten — they're experienced.
+                    </p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <div class="feature-icon">🌿</div>
+                            <div>
+                                <h4>Fresh Ingredients</h4>
+                                <p>Locally sourced, globally inspired</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-icon">👨‍🍳</div>
+                            <div>
+                                <h4>Master Chefs</h4>
+                                <p>Experts from three culinary traditions</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-icon">✨</div>
+                            <div>
+                                <h4>Fusion Done Right</h4>
+                                <p>Authentic flavors, creative combinations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SPECIALTIES SECTION ===== -->
+    <section id="specialties" class="specialties-section section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">✦ 시그니처 / Signature</span>
+                <h2 class="section-title">Our <span class="text-gradient">Signature</span> Specialties</h2>
+                <p class="section-desc">The three dishes that define Arabiana — each one a masterpiece of flavor.<br>아라비아나를 정의하는 세 가지 시그니처 메뉴.</p>
+            </div>
+            <div class="specialties-grid">
+                <!-- Specialty 1: Sweet Crispy Dakgangjeong -->
+                <div class="specialty-card" data-animate="fade-up" data-delay="0">
+                    <div class="specialty-image">
+                        <img src="images/kangjeong-chicken.png" alt="Sweet Crispy Dakgangjeong — 달콤 바삭 닭강정" loading="lazy">
+                        <div class="specialty-badge">★ Best Seller</div>
+                        <div class="specialty-origin">시그니처</div>
+                    </div>
+                    <div class="specialty-content">
+                        <h3 class="specialty-name">달콤 바삭 닭강정<span class="specialty-name-en">Sweet Crispy Dakgangjeong</span></h3>
+                        <p class="specialty-desc">Bite-sized pieces of ultra-crispy chicken coated in a sweet, sticky glaze — scattered with sesame seeds. Our most loved dish, irresistibly addictive.</p>
+                        <div class="specialty-meta">
+                            <span class="specialty-spice">
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot"></span>
+                                <span class="spice-dot"></span>
+                                <span class="spice-dot"></span>
+                                Mild
+                            </span>
+                            <span class="specialty-price">from ₩11,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specialty 2: Arabiana Yangnyeom Chicken -->
+                <div class="specialty-card" data-animate="fade-up" data-delay="200">
+                    <div class="specialty-image">
+                        <img src="images/korean-fried-chicken.png" alt="Arabiana Yangnyeom Chicken — 아라비아나 양념 치킨" loading="lazy">
+                        <div class="specialty-badge">🔥 Fan Favorite</div>
+                        <div class="specialty-origin">시그니처</div>
+                    </div>
+                    <div class="specialty-content">
+                        <h3 class="specialty-name">아라비아나 양념 치킨<span class="specialty-name-en">Arabiana Yangnyeom Chicken</span></h3>
+                        <p class="specialty-desc">Our signature twist on Korean yangnyeom — double-fried to impossible crispiness, glazed in our secret Arabiana sweet-spicy sauce. Crunchy, saucy, unforgettable.</p>
+                        <div class="specialty-meta">
+                            <span class="specialty-spice">
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot"></span>
+                                Medium
+                            </span>
+                            <span class="specialty-price">from ₩11,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specialty 3: Chicken Kabsa -->
+                <div class="specialty-card" data-animate="fade-up" data-delay="400">
+                    <div class="specialty-image">
+                        <img src="images/kabsa.png" alt="Chicken Kabsa — 치킨 캅사" loading="lazy">
+                        <div class="specialty-badge">⭐ Arabian Soul</div>
+                        <div class="specialty-origin">스페셜</div>
+                    </div>
+                    <div class="specialty-content">
+                        <h3 class="specialty-name">치킨 캅사<span class="specialty-name-en">Chicken Kabsa</span></h3>
+                        <p class="specialty-desc">Our crown jewel from Arabia — fragrant basmati rice slow-cooked with tender chicken, a symphony of spices, topped with golden raisins and toasted almonds. A dish fit for royalty.</p>
+                        <div class="specialty-meta">
+                            <span class="specialty-spice">
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot active"></span>
+                                <span class="spice-dot"></span>
+                                <span class="spice-dot"></span>
+                                Mild Heat
+                            </span>
+                            <span class="specialty-price">₩12,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MENU SECTION ===== -->
+    <section id="menu" class="menu-section section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">✦ 메뉴 / Our Menu</span>
+                <h2 class="section-title">아라비아나 <span class="text-gradient">메뉴</span></h2>
+                <p class="section-desc">Arabian soul, Korean crunch — crafted with passion.<br>아라비안 감성과 한국의 바삭함이 만나다.</p>
+            </div>
+
+            <!-- Menu Filter Tabs -->
+            <div class="menu-tabs" data-animate="fade-up">
+                <button class="menu-tab active" data-filter="all" id="menu-tab-all">전체 All</button>
+                <button class="menu-tab" data-filter="chicken" id="menu-tab-chicken">🍗 시그니처 치킨</button>
+                <button class="menu-tab" data-filter="special" id="menu-tab-special">⭐ 스페셜</button>
+                <button class="menu-tab" data-filter="jibap" id="menu-tab-jibap">🍚 지밥 Rice Bowls</button>
+                <button class="menu-tab" data-filter="sides" id="menu-tab-sides">🥤 사이드 & 음료</button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div class="menu-grid" id="menu-grid">
+
+                <!-- ========== SIGNATURE CHICKEN ========== -->
+
+                <!-- 1. Crispy Fry Chicken -->
+                <div class="menu-item menu-item-chicken" data-category="chicken" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">크리스피 프라이 치킨<span class="menu-item-en">Crispy Fry Chicken</span></h4>
+                    </div>
+                    <div class="menu-price-grid">
+                        <div class="price-grid-header">
+                            <span></span>
+                            <span>순살 Boneless</span>
+                            <span>뼈 Bone-in</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">하프 Half</span>
+                            <span class="price-cell">₩10,500</span>
+                            <span class="price-cell">₩10,000</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">한마리 Whole</span>
+                            <span class="price-cell">₩14,000</span>
+                            <span class="price-cell">₩13,500</span>
+                        </div>
+                    </div>
+                    <span class="menu-item-origin">Signature Chicken</span>
+                </div>
+
+                <!-- 2. Sweet Crispy Dakgangjeong -->
+                <div class="menu-item menu-item-chicken" data-category="chicken" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">달콤 바삭 닭강정 <span class="menu-tag bestseller">Best Seller</span><span class="menu-item-en">Sweet Crispy Dakgangjeong</span></h4>
+                    </div>
+                    <div class="menu-price-grid">
+                        <div class="price-grid-header">
+                            <span></span>
+                            <span>순살 Boneless</span>
+                            <span>뼈 Bone-in</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">하프 Half</span>
+                            <span class="price-cell">₩12,000</span>
+                            <span class="price-cell">₩11,000</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">한마리 Whole</span>
+                            <span class="price-cell">₩16,000</span>
+                            <span class="price-cell">₩15,000</span>
+                        </div>
+                    </div>
+                    <span class="menu-item-origin">Signature Chicken</span>
+                </div>
+
+                <!-- 3. Arabiana Yangnyeom Chicken -->
+                <div class="menu-item menu-item-chicken" data-category="chicken" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">아라비아나 양념 치킨 <span class="menu-tag popular">Popular</span><span class="menu-item-en">Arabiana Yangnyeom Chicken</span></h4>
+                    </div>
+                    <div class="menu-price-grid">
+                        <div class="price-grid-header">
+                            <span></span>
+                            <span>순살 Boneless</span>
+                            <span>뼈 Bone-in</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">하프 Half</span>
+                            <span class="price-cell">₩12,000</span>
+                            <span class="price-cell">₩11,000</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">한마리 Whole</span>
+                            <span class="price-cell">₩16,000</span>
+                            <span class="price-cell">₩15,000</span>
+                        </div>
+                    </div>
+                    <span class="menu-item-origin">Signature Chicken</span>
+                </div>
+
+                <!-- 4. Wasabi Crunch Chicken -->
+                <div class="menu-item menu-item-chicken" data-category="chicken" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">와사비 크런치 치킨 <span class="menu-tag new">New</span><span class="menu-item-en">Wasabi Crunch Chicken</span></h4>
+                    </div>
+                    <div class="menu-price-grid">
+                        <div class="price-grid-header">
+                            <span></span>
+                            <span>순살 Boneless</span>
+                            <span>뼈 Bone-in</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">하프 Half</span>
+                            <span class="price-cell">₩12,000</span>
+                            <span class="price-cell">₩11,000</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">한마리 Whole</span>
+                            <span class="price-cell">₩16,000</span>
+                            <span class="price-cell">₩15,000</span>
+                        </div>
+                    </div>
+                    <span class="menu-item-origin">Signature Chicken</span>
+                </div>
+
+                <!-- 5. White Garlic Dakgangjeong -->
+                <div class="menu-item menu-item-chicken" data-category="chicken" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">화이트 갈릭 닭강정<span class="menu-item-en">White Garlic Dakgangjeong</span></h4>
+                    </div>
+                    <div class="menu-price-grid">
+                        <div class="price-grid-header">
+                            <span></span>
+                            <span>순살 Boneless</span>
+                            <span>뼈 Bone-in</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">하프 Half</span>
+                            <span class="price-cell">₩12,000</span>
+                            <span class="price-cell">₩11,000</span>
+                        </div>
+                        <div class="price-grid-row">
+                            <span class="size-label">한마리 Whole</span>
+                            <span class="price-cell">₩16,000</span>
+                            <span class="price-cell">₩15,000</span>
+                        </div>
+                    </div>
+                    <span class="menu-item-origin">Signature Chicken</span>
+                </div>
+
+                <!-- ========== ARABIANA SPECIALS ========== -->
+
+                <!-- Chicken Kabsa -->
+                <div class="menu-item" data-category="special" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">치킨 캅사 <span class="menu-tag bestseller">Signature</span><span class="menu-item-en">Chicken Kabsa</span></h4>
+                        <span class="menu-item-price">₩12,000</span>
+                    </div>
+                    <p class="menu-item-desc">Fragrant Arabian spiced rice slow-cooked with tender chicken, topped with golden raisins and toasted almonds<br>향긋한 아라비안 향신료 밥과 부드러운 치킨, 건포도와 아몬드 토핑</p>
+                    <span class="menu-item-origin">아라비아나 스페셜</span>
+                </div>
+
+                <!-- Lamb Kabsa -->
+                <div class="menu-item" data-category="special" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">양고기 캅사 <span class="menu-tag popular">Premium</span><span class="menu-item-en">Lamb Kabsa</span></h4>
+                        <span class="menu-item-price">₩12,500</span>
+                    </div>
+                    <p class="menu-item-desc">Premium lamb on a bed of aromatic Arabian spiced rice with nuts and raisins<br>프리미엄 양고기와 아라비안 향신료 밥, 견과류와 건포도</p>
+                    <span class="menu-item-origin">아라비아나 스페셜</span>
+                </div>
+
+                <!-- ========== RICE BOWLS (지밥) ========== -->
+
+                <!-- BBQ Jibap -->
+                <div class="menu-item" data-category="jibap" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">바베큐 지밥<span class="menu-item-en">BBQ Jibap Rice Bowl</span></h4>
+                        <span class="menu-item-price">₩8,000</span>
+                    </div>
+                    <p class="menu-item-desc">Smoky BBQ glazed chicken over steamed rice with fresh vegetables<br>스모키 바베큐 치킨과 따뜻한 밥, 신선한 야채</p>
+                    <span class="menu-item-origin">지밥 Rice Bowl</span>
+                </div>
+
+                <!-- Teriyaki Jibap -->
+                <div class="menu-item" data-category="jibap" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">데리야키 지밥<span class="menu-item-en">Teriyaki Jibap Rice Bowl</span></h4>
+                        <span class="menu-item-price">₩8,000</span>
+                    </div>
+                    <p class="menu-item-desc">Sweet teriyaki glazed chicken served on rice with pickled sides<br>달콤한 데리야키 치킨과 밥, 절임 반찬</p>
+                    <span class="menu-item-origin">지밥 Rice Bowl</span>
+                </div>
+
+                <!-- Buldak Jibap -->
+                <div class="menu-item" data-category="jibap" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">불닭 지밥 <span class="menu-tag popular">🔥 Spicy</span><span class="menu-item-en">Buldak Jibap Rice Bowl</span></h4>
+                        <span class="menu-item-price">₩8,000</span>
+                    </div>
+                    <p class="menu-item-desc">Fiery Korean fire chicken over rice — not for the faint of heart!<br>매콤한 불닭과 밥 — 매운맛 좋아하는 분들을 위한 메뉴!</p>
+                    <span class="menu-item-origin">지밥 Rice Bowl</span>
+                </div>
+
+                <!-- Gochujang Jibap -->
+                <div class="menu-item" data-category="jibap" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">고추장 지밥<span class="menu-item-en">Gochujang Jibap Rice Bowl</span></h4>
+                        <span class="menu-item-price">₩8,000</span>
+                    </div>
+                    <p class="menu-item-desc">Korean chili paste glazed chicken over warm rice with sesame vegetables<br>고추장 소스 치킨과 따뜻한 밥, 참깨 야채</p>
+                    <span class="menu-item-origin">지밥 Rice Bowl</span>
+                </div>
+
+                <!-- ========== SIDES & DRINKS ========== -->
+
+                <!-- French Fries -->
+                <div class="menu-item" data-category="sides" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">감자튀김<span class="menu-item-en">French Fries</span></h4>
+                        <span class="menu-item-price">₩3,000</span>
+                    </div>
+                    <p class="menu-item-desc">Golden crispy fries — the perfect companion to any chicken<br>바삭한 감자튀김 — 치킨의 완벽한 친구</p>
+                    <span class="menu-item-origin">사이드 Side</span>
+                </div>
+
+                <!-- Soft Drink 355ml -->
+                <div class="menu-item" data-category="sides" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">음료수 355ml<span class="menu-item-en">Soft Drink 355ml</span></h4>
+                        <span class="menu-item-price">₩1,500</span>
+                    </div>
+                    <p class="menu-item-desc">Assorted soft drinks — Coke, Sprite, Fanta and more<br>콜라, 사이다, 환타 등 다양한 음료</p>
+                    <span class="menu-item-origin">음료 Drink</span>
+                </div>
+
+                <!-- Soft Drink 1.25L -->
+                <div class="menu-item" data-category="sides" data-animate="fade-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-name">음료수 1.25L<span class="menu-item-en">Soft Drink 1.25L</span></h4>
+                        <span class="menu-item-price">₩2,500</span>
+                    </div>
+                    <p class="menu-item-desc">Large bottle to share — perfect for groups<br>나눠먹기 좋은 대용량 음료</p>
+                    <span class="menu-item-origin">음료 Drink</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY SECTION ===== -->
+    <section id="gallery" class="gallery-section section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">✦ Gallery</span>
+                <h2 class="section-title">A Feast for <span class="text-gradient">the Eyes</span></h2>
+                <p class="section-desc">Every plate is a canvas, every dish a work of art.</p>
+            </div>
+            <div class="gallery-grid" data-animate="fade-up">
+                <div class="gallery-item gallery-large">
+                    <img src="images/hero-spread.png" alt="Arabiana signature dishes spread" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Our Signature Spread</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/kabsa.png" alt="Arabian Kabsa dish" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Arabian Kabsa</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/korean-fried-chicken.png" alt="Korean Fried Chicken" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Korean Fried Chicken</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/biryani.png" alt="Hyderabadi Biryani" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Hyderabadi Biryani</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/kangjeong-chicken.png" alt="Kangjeong Chicken" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Kangjeong Chicken</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="frontdoor.jpeg" alt="Arabiana restaurant front entrance" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Our Front Door</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="inside.jpeg" alt="Arabiana restaurant interior" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span>Our Interior</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section id="testimonials" class="testimonials-section section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">✦ Reviews</span>
+                <h2 class="section-title">What Our <span class="text-gradient">Guests</span> Say</h2>
+            </div>
+            <div class="testimonials-slider" data-animate="fade-up">
+                <div class="testimonial-card active" id="testimonial-1">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The Arabian Kabsa here is better than what I had in Riyadh. The lamb falls right off the bone, and the rice is pure perfection. Arabiana is a hidden gem!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AK</div>
+                        <div>
+                            <strong>Ahmed Khan</strong>
+                            <span>Food Critic</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card" id="testimonial-2">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"I came for the Korean Fried Chicken and stayed for everything else. The fusion menu is genius — the Tikka Gochujang Wings are out of this world!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div>
+                            <strong>Soo-Jin Park</strong>
+                            <span>Regular Customer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card" id="testimonial-3">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The Kangjeong Chicken is SO addictive — sweet, crispy, and perfectly glazed. The ambiance is incredible too. This place feels like a luxury experience."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RP</div>
+                        <div>
+                            <strong>Riya Patel</strong>
+                            <span>Foodie Blogger</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-dots" id="testimonial-dots">
+                    <button class="dot active" data-index="0" aria-label="Testimonial 1"></button>
+                    <button class="dot" data-index="1" aria-label="Testimonial 2"></button>
+                    <button class="dot" data-index="2" aria-label="Testimonial 3"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== RESERVATION & CONTACT ===== -->
+    <section id="contact" class="contact-section section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Reservation Form -->
+                <div class="reservation-card" id="reserve" data-animate="fade-right">
+                    <h3 class="reservation-title">Reserve a Table</h3>
+                    <p class="reservation-subtitle">Book your unforgettable dining experience</p>
+                    <form id="reservation-form" class="reservation-form">
+                        <div class="form-group">
+                            <label for="res-name">Full Name</label>
+                            <input type="text" id="res-name" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-date">Date</label>
+                                <input type="date" id="res-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-time">Time</label>
+                                <input type="time" id="res-time" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-guests">Guests</label>
+                                <select id="res-guests" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                    <option value="5">5 Guests</option>
+                                    <option value="6">6 Guests</option>
+                                    <option value="7-10">7-10 Guests</option>
+                                    <option value="10+">10+ Guests</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-phone">Phone</label>
+                                <input type="tel" id="res-phone" placeholder="+1 (555) 000-0000" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-notes">Special Requests</label>
+                            <textarea id="res-notes" rows="3" placeholder="Any dietary requirements or special occasions?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="submit-reservation">
+                            <span>Book Now</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info" data-animate="fade-left">
+                    <h3 class="contact-title">Visit Us</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <strong>Location</strong>
+                                <p>123 Fusion Street, Downtown<br>Flavor City, FC 10001</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div>
+                                <strong>Phone</strong>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <div>
+                                <strong>Email</strong>
+                                <p>hello@arabiana.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🕐</div>
+                            <div>
+                                <strong>Opening Hours</strong>
+                                <p>Mon – Thu: 11AM – 10PM<br>
+                                Fri – Sat: 11AM – 11PM<br>
+                                Sunday: 12PM – 9PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link" id="social-instagram" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" id="social-facebook" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" id="social-twitter" aria-label="Twitter / X">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" id="social-tiktok" aria-label="TikTok">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3 class="footer-logo"><img src="logo.jpeg" alt="Arabiana" class="footer-logo-img"> ARABIANA</h3>
+                    <p>Where the bold spices of India, the aromatic traditions of Arabia, and the dynamic flavors of Korea come together for one extraordinary dining experience.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">Our Story</a></li>
+                        <li><a href="#specialties">Specialties</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Hours</h4>
+                    <ul>
+                        <li>Mon – Thu: 11AM–10PM</li>
+                        <li>Fri – Sat: 11AM–11PM</li>
+                        <li>Sunday: 12PM–9PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Arabiana. All rights reserved.</p>
+                <p>Crafted with ❤️ for food lovers</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <!-- ===== SUCCESS MODAL ===== -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="reservation-modal">
+            <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+            <div class="modal-icon">🎉</div>
+            <h3>Reservation Confirmed!</h3>
+            <p>Thank you for choosing Arabiana. We can't wait to serve you an unforgettable meal.</p>
+            <button class="btn btn-primary" id="modal-ok-btn" onclick="closeModal()">Wonderful!</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
