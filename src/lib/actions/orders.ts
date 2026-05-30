@@ -6,10 +6,17 @@ import { notify } from "@/lib/actions/notifications";
 import { addDays } from "@/lib/utils";
 import type { PaymentMethod, PlanType } from "@/lib/types";
 
+export type WeekSelection = { foodItemId: string; quantity: number }[];
+
 export interface PlaceOrderInput {
   weeklyMenuId: string;
   planType: PlanType;
-  items: { foodItemId: string; quantity: number }[];
+  /**
+   * One entry per delivery week. Weekly plan => 1 entry; monthly => 4 entries,
+   * each a distinct dish selection for that week. Drawn from the same
+   * published menu (only one menu is open at a time).
+   */
+  weeklySelections: WeekSelection[];
   specialNote?: string;
   paymentMethod: PaymentMethod;
   delivery: {
@@ -43,7 +50,7 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
   } = await supabase.auth.getUser();
   if (!user) return { error: "You must be logged in." };
 
-  if (!input.items.length) return { error: "Please select at least one food item." };
+  if (!input.weeklySelections?.length) return { error: "Please select at least one food item." };
 
   // 1. Confirm the menu is published and load its priced items.
   const { data: menu } = await supabase
@@ -66,24 +73,33 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
     ])
   );
 
-  // 2. Build validated line items + per-week subtotal.
-  const lines = input.items
-    .filter((i) => i.quantity > 0 && priceMap.has(i.foodItemId))
-    .map((i) => {
-      const info = priceMap.get(i.foodItemId)!;
-      return {
-        food_item_id: i.foodItemId,
-        name: info.name,
-        unit_price: info.price,
-        quantity: i.quantity,
-        line_total: info.price * i.quantity,
-      };
-    });
-  if (!lines.length) return { error: "Selected items are not on this week's menu." };
-
-  const perWeek = lines.reduce((s, l) => s + l.line_total, 0);
   const weeks = input.planType === "monthly" ? 4 : 1;
-  const total = perWeek * weeks;
+
+  // 2. Build validated line items PER WEEK. If the client sent fewer weeks
+  //    than the plan needs, reuse the first week's selection for the rest.
+  const buildLines = (sel: WeekSelection) =>
+    (sel ?? [])
+      .filter((i) => i.quantity > 0 && priceMap.has(i.foodItemId))
+      .map((i) => {
+        const info = priceMap.get(i.foodItemId)!;
+        return {
+          food_item_id: i.foodItemId,
+          name: info.name,
+          unit_price: info.price,
+          quantity: i.quantity,
+          line_total: info.price * i.quantity,
+        };
+      });
+
+  const weekLines = Array.from({ length: weeks }, (_, w) =>
+    buildLines(input.weeklySelections[w] ?? input.weeklySelections[0])
+  );
+  if (weekLines.some((l) => l.length === 0)) {
+    return { error: "Each delivery week needs at least one item from this menu." };
+  }
+
+  const weekTotals = weekLines.map((lines) => lines.reduce((s, l) => s + l.line_total, 0));
+  const total = weekTotals.reduce((s, n) => s + n, 0);
 
   // 3. Resolve a matching plan (optional link).
   const { data: plan } = await supabase
@@ -117,10 +133,12 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
     .single();
   if (subErr || !sub) return { error: subErr?.message ?? "Could not create subscription." };
 
-  // 5. Create one order (+ items) per delivery week.
+  // 5. Create one order (+ that week's items) per delivery week.
   let firstOrderId = "";
   for (let w = 0; w < weeks; w++) {
     const deliveryDate = addDays(firstDelivery, w * 7);
+    const lines = weekLines[w];
+    const perWeek = weekTotals[w];
     const { data: order, error: ordErr } = await supabase
       .from("orders")
       .insert({
