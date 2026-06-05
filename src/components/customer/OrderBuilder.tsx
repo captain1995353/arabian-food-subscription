@@ -231,7 +231,8 @@ export function OrderBuilder({ menu, items, plans, defaultPlanId, prefill }: Pro
                   <div className="flex flex-1 flex-col p-4">
                     <div className="flex justify-between gap-2">
                       <h3 className="text-sm font-semibold">{f.name}</h3>
-                      <span className="font-display text-sm font-bold text-gold">{formatKRW(it.price)}</span>
+                      {/* Packages are a flat price, so per-item prices are hidden. */}
+                      {!isPackage && <span className="font-display text-sm font-bold text-gold">{formatKRW(it.price)}</span>}
                     </div>
                     <p className="mt-1 line-clamp-2 text-xs text-ink-muted">{f.description}</p>
                     {max > 0 && <p className="mt-1 text-xs text-ink-muted">Max {max} per week</p>}
