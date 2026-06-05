@@ -22,12 +22,13 @@ const naskh = Noto_Naskh_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "Arabian Food Subscription | Weekly Halal Meals in South Korea",
+  title: "Arabian Food Subscription | Weekly Halal Deshi Meals in South Korea",
   description:
-    "Weekly and monthly halal food subscriptions for foreigners living in South Korea. Fresh Arabian, Indian and Korean meals delivered to your door every week.",
+    "Weekly and monthly halal food subscriptions for foreigners living in South Korea. Fresh home-style Deshi (Bangladeshi) meals delivered to your door every week.",
   keywords: [
     "halal food subscription Korea",
-    "Arabian food delivery Korea",
+    "deshi food delivery Korea",
+    "bangladeshi food Korea",
     "weekly meal subscription",
     "foreigners Korea food",
   ],

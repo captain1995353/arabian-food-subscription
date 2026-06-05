@@ -22,10 +22,10 @@ export default function AboutPage() {
             halal food without the hassle of shopping and cooking every day.
           </p>
           <p>
-            Every week our chefs prepare fresh Arabian, Indian and Korean dishes —
-            from fragrant Chicken Kabsa to crispy Korean fried chicken — all
-            halal, all made with care. You pick what you want, choose a weekly or
-            monthly plan, and we deliver to your door.
+            Every week our cooks prepare fresh, home-style Deshi dishes —
+            beef curry, fish curry, daal, vegetables and more — all halal, all
+            made with care, just like home. You pick what you want, choose a
+            weekly or monthly plan, and we deliver to your door.
           </p>
           <p>
             We cook for students, workers and families across Korean cities who

@@ -19,7 +19,7 @@ export default async function PlansPage() {
     weekly: [
       "1 weekly delivery",
       "Choose your dishes each week",
-      "Great way to try Arabian",
+      "Great way to try our Deshi food",
       "Pause or cancel any time",
     ],
     monthly: [

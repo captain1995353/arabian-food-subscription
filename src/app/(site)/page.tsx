@@ -35,7 +35,7 @@ export default async function HomePage() {
       <section className="relative overflow-hidden">
         <Image
           src="/images/hero-spread.png"
-          alt="Arabian food spread"
+          alt="Deshi home-style food spread"
           fill
           priority
           className="object-cover opacity-30"
@@ -44,13 +44,13 @@ export default async function HomePage() {
         <div className="container-x relative py-24 text-center md:py-32">
           <Badge className="mx-auto mb-5">Halal • Weekly delivery • Made for foreigners in Korea</Badge>
           <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-            Home-style <span className="text-gradient-gold">Arabian food</span>,
+            Home-style <span className="text-gradient-gold">Deshi food</span>,
             <br /> delivered to your door every week
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-ink-secondary">
             Living in South Korea and missing real halal home cooking? Subscribe
-            weekly or monthly and we deliver fresh Arabian, Indian and Korean
-            meals — no shopping, no cooking, no stress.
+            weekly or monthly and we deliver fresh, home-style Deshi meals —
+            no shopping, no cooking, no stress.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Link href="/register" className="btn btn-gold">

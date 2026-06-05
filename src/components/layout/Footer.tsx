@@ -8,9 +8,9 @@ export function Footer() {
         <div className="md:col-span-2">
           <Logo />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-muted">
-            Fresh halal Arabian, Indian and Korean meals delivered weekly to
-            foreigners living across South Korea. Subscribe weekly or monthly —
-            we cook, we deliver, you enjoy.
+            Fresh halal home-style Deshi meals delivered weekly to foreigners
+            living across South Korea. Subscribe weekly or monthly — we cook,
+            we deliver, you enjoy.
           </p>
         </div>
         <div>
