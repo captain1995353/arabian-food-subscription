@@ -83,6 +83,50 @@ export async function toggleFoodActive(id: string, isActive: boolean) {
 }
 
 // =====================================================================
+//  PLANS / PACKAGES
+// =====================================================================
+
+export async function savePlan(_prev: AdminState, formData: FormData): Promise<AdminState> {
+  await requireAdmin();
+  const supabase = await createClient();
+  const id = (formData.get("id") as string) || null;
+  const planType = ((formData.get("plan_type") as string) || "weekly") as "weekly" | "monthly";
+
+  const payload = {
+    name: (formData.get("name") as string)?.trim(),
+    plan_type: planType,
+    weeks_count: planType === "monthly" ? 4 : 1, // weekly = 1 delivery, monthly = 4
+    item_count: Number(formData.get("item_count") || 0), // 0 = a-la-carte, >0 = fixed package
+    base_price: Number(formData.get("base_price") || 0),
+    description: (formData.get("description") as string) || "",
+    is_active: checkbox(formData, "is_active"),
+  };
+  if (!payload.name) return { error: "Name is required." };
+
+  const { error } = id
+    ? await supabase.from("subscription_plans").update(payload).eq("id", id)
+    : await supabase.from("subscription_plans").insert(payload);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/packages");
+  return { success: true };
+}
+
+export async function deletePlan(id: string) {
+  await requireAdmin();
+  const supabase = await createClient();
+  await supabase.from("subscription_plans").delete().eq("id", id);
+  revalidatePath("/admin/packages");
+}
+
+export async function togglePlanActive(id: string, isActive: boolean) {
+  await requireAdmin();
+  const supabase = await createClient();
+  await supabase.from("subscription_plans").update({ is_active: isActive }).eq("id", id);
+  revalidatePath("/admin/packages");
+}
+
+// =====================================================================
 //  WEEKLY MENUS
 // =====================================================================
 

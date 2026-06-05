@@ -7,6 +7,7 @@ import {
   Truck,
   ShoppingBag,
   BarChart3,
+  Package,
   Settings,
 } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
@@ -18,6 +19,7 @@ const NAV: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
   { href: "/admin/food", label: "Food Items", icon: <UtensilsCrossed size={18} /> },
   { href: "/admin/menus", label: "Weekly Menus", icon: <CalendarRange size={18} /> },
+  { href: "/admin/packages", label: "Plans & Packages", icon: <Package size={18} /> },
   { href: "/admin/orders", label: "Orders", icon: <ShoppingBag size={18} /> },
   { href: "/admin/subscriptions", label: "Subscriptions", icon: <CalendarRange size={18} /> },
   { href: "/admin/customers", label: "Customers", icon: <Users size={18} /> },

@@ -172,8 +172,11 @@ create table public.subscription_plans (
   name        text not null,                          -- e.g. "Weekly Plan", "Monthly Plan"
   plan_type   public.plan_type not null,
   weeks_count int not null default 1,                 -- weekly = 1, monthly = 4
+  item_count  int not null default 0,                 -- 0 = a-la-carte (sum item prices);
+                                                       -- > 0 = fixed package: pick exactly N
+                                                       -- items for the flat base_price per week
   description text,
-  base_price  numeric(10,2) not null default 0,       -- optional flat plan fee
+  base_price  numeric(10,2) not null default 0,       -- a-la-carte: optional fee; package: flat price/week
   is_active   boolean not null default true,
   created_at  timestamptz not null default now()
 );

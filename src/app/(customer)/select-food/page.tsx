@@ -3,7 +3,7 @@ import { requireCustomer } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { OrderBuilder } from "@/components/customer/OrderBuilder";
 import { formatDate } from "@/lib/utils";
-import type { PlanType, WeeklyMenu, WeeklyMenuItem } from "@/lib/types";
+import type { SubscriptionPlan, WeeklyMenu, WeeklyMenuItem } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,6 @@ export default async function SelectFoodPage({
 }) {
   const { profile, customer } = await requireCustomer();
   const { plan } = await searchParams;
-  const defaultPlan: PlanType = plan === "monthly" ? "monthly" : "weekly";
 
   const supabase = await createClient();
   const { data: menu } = await supabase
@@ -24,6 +23,16 @@ export default async function SelectFoodPage({
     .order("start_date", { ascending: false })
     .limit(1)
     .maybeSingle();
+
+  const { data: planRows } = await supabase
+    .from("subscription_plans")
+    .select("*")
+    .eq("is_active", true)
+    .order("plan_type")
+    .order("item_count");
+  const plans = (planRows as SubscriptionPlan[]) ?? [];
+  // Preselect by ?plan=weekly|monthly if present (first matching plan).
+  const defaultPlanId = plan ? plans.find((p) => p.plan_type === plan)?.id : undefined;
 
   let items: WeeklyMenuItem[] = [];
   if (menu) {
@@ -65,7 +74,8 @@ export default async function SelectFoodPage({
             delivery_date: (menu as WeeklyMenu).delivery_date,
           }}
           items={items}
-          defaultPlan={defaultPlan}
+          plans={plans}
+          defaultPlanId={defaultPlanId}
           prefill={{
             name: profile.full_name,
             phone: profile.phone ?? "",

@@ -8,20 +8,14 @@ import { placeOrder, type PlaceOrderInput } from "@/lib/actions/orders";
 import { formatKRW, formatDate, addDays, cn } from "@/lib/utils";
 import { Message } from "@/components/ui/Toast";
 import { Badge } from "@/components/ui/Badge";
-import type { PaymentMethod, PlanType, WeeklyMenuItem } from "@/lib/types";
+import type { PaymentMethod, SubscriptionPlan, WeeklyMenuItem } from "@/lib/types";
 
 interface Props {
   menu: { id: string; title: string; delivery_date: string };
   items: WeeklyMenuItem[];
-  defaultPlan: PlanType;
-  prefill: {
-    name: string;
-    phone: string;
-    city: string;
-    address: string;
-    zip: string;
-    room: string;
-  };
+  plans: SubscriptionPlan[];
+  defaultPlanId?: string;
+  prefill: { name: string; phone: string; city: string; address: string; zip: string; room: string };
 }
 
 const PAYMENT_METHODS: { value: PaymentMethod; label: string; hint: string }[] = [
@@ -30,13 +24,12 @@ const PAYMENT_METHODS: { value: PaymentMethod; label: string; hint: string }[] =
   { value: "cash", label: "Cash on Delivery", hint: "Pay the driver in cash on delivery." },
 ];
 
-// qty state: { [weekIndex]: { [foodItemId]: count } }
 type WeekQty = Record<number, Record<string, number>>;
 
-export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
+export function OrderBuilder({ menu, items, plans, defaultPlanId, prefill }: Props) {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [planType, setPlanType] = useState<PlanType>(defaultPlan);
+  const [planId, setPlanId] = useState<string>(defaultPlanId ?? plans[0]?.id ?? "");
   const [qty, setQty] = useState<WeekQty>({});
   const [activeWeek, setActiveWeek] = useState(0);
   const [payment, setPayment] = useState<PaymentMethod>("bank_transfer");
@@ -45,30 +38,32 @@ export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
 
-  const weeks = planType === "monthly" ? 4 : 1;
+  const plan = plans.find((p) => p.id === planId);
+  const weeks = plan ? plan.weeks_count : 1;
+  const itemCount = plan?.item_count ?? 0; // > 0 => fixed package
+  const isPackage = itemCount > 0;
 
-  const priceOf = (foodId: string) =>
-    Number(items.find((i) => i.food_item_id === foodId)?.price ?? 0);
-
-  const weekCount = (w: number) => qty[w] ?? {};
+  const priceOf = (id: string) => Number(items.find((i) => i.food_item_id === id)?.price ?? 0);
+  const weekMap = (w: number) => qty[w] ?? {};
   const setItemQty = (w: number, id: string, n: number) =>
     setQty((q) => ({ ...q, [w]: { ...(q[w] ?? {}), [id]: Math.max(0, n) } }));
 
-  const weekTotal = (w: number) =>
-    Object.entries(weekCount(w)).reduce((s, [id, n]) => s + n * priceOf(id), 0);
-  const weekItemCount = (w: number) =>
-    Object.values(weekCount(w)).reduce((a, b) => a + b, 0);
+  const weekQtyTotal = (w: number) => Object.values(weekMap(w)).reduce((a, b) => a + b, 0);
+  const weekPriceSum = (w: number) =>
+    Object.entries(weekMap(w)).reduce((s, [id, n]) => s + n * priceOf(id), 0);
+  // Per-week charge: flat package price, or sum of item prices.
+  const weekCharge = (w: number) => (isPackage ? Number(plan!.base_price) : weekPriceSum(w));
 
   const grandTotal = useMemo(() => {
     let t = 0;
-    for (let w = 0; w < weeks; w++) t += weekTotal(w);
+    for (let w = 0; w < weeks; w++) t += weekCharge(w);
     return t;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qty, weeks]);
+  }, [qty, weeks, planId]);
 
-  const allWeeksHaveItems = Array.from({ length: weeks }, (_, w) => weekItemCount(w) > 0).every(Boolean);
+  const weekValid = (w: number) => (isPackage ? weekQtyTotal(w) === itemCount : weekQtyTotal(w) > 0);
+  const allWeeksValid = Array.from({ length: weeks }, (_, w) => weekValid(w)).every(Boolean);
 
-  // Copy active week's selection to every week (handy for monthly).
   function copyWeekToAll() {
     setQty((q) => {
       const src = { ...(q[activeWeek] ?? {}) };
@@ -81,13 +76,13 @@ export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
   function submit() {
     setError("");
     const weeklySelections = Array.from({ length: weeks }, (_, w) =>
-      Object.entries(weekCount(w))
+      Object.entries(weekMap(w))
         .filter(([, n]) => n > 0)
         .map(([foodItemId, quantity]) => ({ foodItemId, quantity }))
     );
     const payload: PlaceOrderInput = {
       weeklyMenuId: menu.id,
-      planType,
+      planId,
       weeklySelections,
       paymentMethod: payment,
       specialNote: note,
@@ -118,72 +113,81 @@ export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
         })}
       </div>
 
-      {/* STEP 1 — plan */}
+      {/* STEP 1 — choose plan / package */}
       {step === 1 && (
         <div className="grid gap-4 sm:grid-cols-2">
-          {(["weekly", "monthly"] as PlanType[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPlanType(p)}
-              className={cn(
-                "rounded-xl border p-5 text-left transition",
-                planType === p ? "border-gold bg-gold/10 ring-1 ring-gold/30" : "border-teal/20 hover:border-gold/50"
-              )}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-semibold capitalize">{p} plan</span>
-                {p === "monthly" && <Badge>Best value</Badge>}
-              </div>
-              <p className="mt-1 text-2xl font-display font-bold text-gold">
-                {p === "weekly" ? "1 delivery" : "4 weekly deliveries"}
-              </p>
-              <p className="mt-2 text-sm text-ink-muted">
-                {p === "weekly"
-                  ? "Pay for one week, delivered once. Pick your dishes."
-                  : "Choose different dishes for each of the 4 weeks. Fresh delivery every week."}
-              </p>
-            </button>
-          ))}
+          {plans.map((p) => {
+            const pkg = p.item_count > 0;
+            return (
+              <button
+                key={p.id}
+                onClick={() => setPlanId(p.id)}
+                className={cn("rounded-xl border p-5 text-left transition", planId === p.id ? "border-gold bg-gold/10 ring-1 ring-gold/30" : "border-teal/20 hover:border-gold/50")}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold">{p.name}</span>
+                  {pkg ? <Badge>Package</Badge> : <span className="text-xs text-ink-muted capitalize">{p.plan_type}</span>}
+                </div>
+                <p className="mt-1 font-display text-2xl font-bold text-gold">
+                  {pkg ? formatKRW(p.base_price) : "Pay per dish"}
+                  {pkg && <span className="text-sm text-ink-muted"> / week</span>}
+                </p>
+                <p className="mt-2 text-sm text-ink-muted">
+                  {pkg ? `Pick exactly ${p.item_count} dishes each week · ${p.weeks_count} ${p.weeks_count === 1 ? "delivery" : "weekly deliveries"}.` : p.description}
+                </p>
+                {pkg && p.weeks_count > 1 && (
+                  <p className="mt-1 text-xs text-ink-muted">Month total: {formatKRW(p.base_price * p.weeks_count)}</p>
+                )}
+              </button>
+            );
+          })}
+          {plans.length === 0 && <p className="text-ink-muted">No plans available right now.</p>}
         </div>
       )}
 
-      {/* STEP 2 — select food (per-week for monthly) */}
+      {/* STEP 2 — select food */}
       {step === 2 && (
         <div className="space-y-4">
+          {isPackage && (
+            <Message type="info">
+              This is a fixed package: pick <strong>exactly {itemCount} dishes</strong>{weeks > 1 ? " for each week" : ""} for {formatKRW(plan!.base_price)}/week.
+            </Message>
+          )}
+
           {weeks > 1 && (
             <div className="flex flex-wrap items-center gap-2">
               {Array.from({ length: weeks }, (_, w) => (
-                <button
-                  key={w}
-                  onClick={() => setActiveWeek(w)}
-                  className={cn(
-                    "rounded-full border px-4 py-1.5 text-sm transition",
-                    activeWeek === w ? "border-gold bg-gold text-bg" : "border-teal/25 text-ink-muted hover:border-gold hover:text-gold"
-                  )}
-                >
+                <button key={w} onClick={() => setActiveWeek(w)}
+                  className={cn("rounded-full border px-4 py-1.5 text-sm transition", activeWeek === w ? "border-gold bg-gold text-bg" : "border-teal/25 text-ink-muted hover:border-gold hover:text-gold")}>
                   Week {w + 1}
-                  <span className="ml-2 text-xs opacity-80">
-                    {weekItemCount(w)} · {formatKRW(weekTotal(w))}
+                  <span className={cn("ml-2 text-xs", weekValid(w) ? "opacity-90" : "text-spice")}>
+                    {isPackage ? `${weekQtyTotal(w)}/${itemCount}` : `${weekQtyTotal(w)}`}
                   </span>
                 </button>
               ))}
               <button onClick={copyWeekToAll} className="ml-auto inline-flex items-center gap-1.5 text-sm text-gold hover:underline">
-                <Copy size={14} /> Copy Week {activeWeek + 1} to all weeks
+                <Copy size={14} /> Copy Week {activeWeek + 1} to all
               </button>
             </div>
           )}
-          {weeks > 1 && (
-            <p className="text-sm text-ink-muted">
-              Choosing dishes for <span className="font-semibold text-ink">Week {activeWeek + 1}</span> ·
-              delivers {formatDate(addDays(new Date(menu.delivery_date), activeWeek * 7))}
-            </p>
-          )}
+
+          <p className="text-sm text-ink-muted">
+            {weeks > 1 && <>Week {activeWeek + 1} · delivers {formatDate(addDays(new Date(menu.delivery_date), activeWeek * 7))} · </>}
+            {isPackage ? (
+              <span className={weekValid(activeWeek) ? "text-teal-light" : "text-gold"}>
+                {weekQtyTotal(activeWeek)} of {itemCount} selected
+              </span>
+            ) : (
+              <>{weekQtyTotal(activeWeek)} selected · {formatKRW(weekPriceSum(activeWeek))}</>
+            )}
+          </p>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((it) => {
               const f = it.food_item!;
-              const count = weekCount(activeWeek)[it.food_item_id] ?? 0;
+              const count = weekMap(activeWeek)[it.food_item_id] ?? 0;
               const sold = it.available_quantity <= 0;
+              const atLimit = isPackage && weekQtyTotal(activeWeek) >= itemCount && count === 0;
               return (
                 <div key={it.id} className="card flex flex-col overflow-hidden p-0">
                   <div className="relative h-36">
@@ -200,12 +204,22 @@ export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
                       {sold ? (
                         <span className="text-xs text-spice">Sold out</span>
                       ) : count === 0 ? (
-                        <button onClick={() => setItemQty(activeWeek, it.food_item_id, 1)} className="btn btn-outline w-full py-1.5 text-xs">Add</button>
+                        <button
+                          disabled={atLimit}
+                          onClick={() => setItemQty(activeWeek, it.food_item_id, 1)}
+                          className={cn("btn w-full py-1.5 text-xs", atLimit ? "btn-outline opacity-40" : "btn-outline")}
+                        >
+                          {atLimit ? `Limit ${itemCount}` : "Add"}
+                        </button>
                       ) : (
                         <div className="flex w-full items-center justify-between rounded-full border border-gold/40 px-1">
                           <button onClick={() => setItemQty(activeWeek, it.food_item_id, count - 1)} className="p-1.5 text-gold"><Minus size={14} /></button>
                           <span className="text-sm font-semibold">{count}</span>
-                          <button onClick={() => setItemQty(activeWeek, it.food_item_id, count + 1)} className="p-1.5 text-gold"><Plus size={14} /></button>
+                          <button
+                            disabled={isPackage && weekQtyTotal(activeWeek) >= itemCount}
+                            onClick={() => setItemQty(activeWeek, it.food_item_id, count + 1)}
+                            className="p-1.5 text-gold disabled:opacity-30"
+                          ><Plus size={14} /></button>
                         </div>
                       )}
                     </div>
@@ -244,24 +258,24 @@ export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
 
           <div className="card h-fit">
             <h2 className="text-lg font-semibold">Order summary</h2>
-            <p className="mt-1 text-sm capitalize text-ink-muted">{planType} plan · {weeks} {weeks === 1 ? "delivery" : "deliveries"}</p>
+            <p className="mt-1 text-sm text-ink-muted">
+              {plan?.name} · {weeks} {weeks === 1 ? "delivery" : "deliveries"}{isPackage ? ` · ${itemCount} items/week` : ""}
+            </p>
             <div className="mt-3 space-y-2">
               {Array.from({ length: weeks }, (_, w) => (
                 <div key={w} className="flex justify-between text-sm">
                   <span className="text-ink-secondary">
                     Week {w + 1} · {formatDate(addDays(new Date(menu.delivery_date), w * 7))}
-                    <span className="text-ink-muted"> ({weekItemCount(w)} item{weekItemCount(w) === 1 ? "" : "s"})</span>
+                    <span className="text-ink-muted"> ({weekQtyTotal(w)} item{weekQtyTotal(w) === 1 ? "" : "s"})</span>
                   </span>
-                  <span>{formatKRW(weekTotal(w))}</span>
+                  <span>{formatKRW(weekCharge(w))}</span>
                 </div>
               ))}
             </div>
             <div className="mt-3 flex justify-between border-t border-teal/15 pt-3 text-base font-bold">
               <span>Total</span><span className="text-gold">{formatKRW(grandTotal)}</span>
             </div>
-            <Message type="info">
-              Payment is confirmed manually by our team. After ordering, send your payment and we&apos;ll mark it paid.
-            </Message>
+            <Message type="info">Payment is confirmed manually by our team after you order.</Message>
           </div>
         </div>
       )}
@@ -276,16 +290,14 @@ export function OrderBuilder({ menu, items, defaultPlan, prefill }: Props) {
         </div>
         <div className="flex gap-2">
           {step > 1 && <button onClick={() => setStep((s) => s - 1)} className="btn btn-outline py-2">Back</button>}
-          {step < 3 ? (
-            <button
-              onClick={() => setStep((s) => s + 1)}
-              disabled={step === 2 && !allWeeksHaveItems}
-              className="btn btn-gold py-2"
-            >
-              {step === 2 && !allWeeksHaveItems ? "Pick food for every week" : "Continue"}
+          {step === 1 && <button onClick={() => setStep(2)} disabled={!plan} className="btn btn-gold py-2">Continue</button>}
+          {step === 2 && (
+            <button onClick={() => setStep(3)} disabled={!allWeeksValid} className="btn btn-gold py-2">
+              {allWeeksValid ? "Continue" : isPackage ? `Pick ${itemCount} per week` : "Pick food for every week"}
             </button>
-          ) : (
-            <button onClick={submit} disabled={pending || !allWeeksHaveItems} className="btn btn-gold py-2">
+          )}
+          {step === 3 && (
+            <button onClick={submit} disabled={pending || !allWeeksValid} className="btn btn-gold py-2">
               {pending ? "Placing order…" : "Place order"}
             </button>
           )}

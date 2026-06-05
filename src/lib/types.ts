@@ -120,6 +120,8 @@ export interface SubscriptionPlan {
   name: string;
   plan_type: PlanType;
   weeks_count: number;
+  /** 0 = a-la-carte (sum item prices); > 0 = fixed package (pick exactly N items for base_price/week). */
+  item_count: number;
   description: string | null;
   base_price: number;
   is_active: boolean;

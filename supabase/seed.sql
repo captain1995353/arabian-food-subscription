@@ -34,9 +34,13 @@ insert into public.food_items (id, name, description, image_url, price, category
   ('11111111-0000-0000-0000-00000000000c', 'Soft Drink 355ml',        'Assorted soft drinks — Coke, Sprite, Fanta.',                                                                    '/images/hero-spread.png',            1500,  'Drinks',    true, 0, 100, true);
 
 -- ---- SUBSCRIPTION PLANS ----
-insert into public.subscription_plans (id, name, plan_type, weeks_count, description, base_price, is_active) values
-  ('22222222-0000-0000-0000-000000000001', 'Weekly Plan',  'weekly',  1, 'Pay for one week of food, delivered once this week. Great to try Arabian.', 0, true),
-  ('22222222-0000-0000-0000-000000000002', 'Monthly Plan', 'monthly', 4, 'Pay once for a full month. Fresh food delivered every week for 4 weeks. Best value.', 0, true);
+-- item_count = 0  -> a-la-carte (price = sum of chosen item prices)
+-- item_count > 0  -> fixed package (pick exactly N items for the flat base_price/week)
+insert into public.subscription_plans (id, name, plan_type, weeks_count, item_count, base_price, description, is_active) values
+  ('22222222-0000-0000-0000-000000000001', 'Weekly Plan',  'weekly',  1, 0, 0, 'Pay per dish for one week, delivered once. Great to try Arabian.', true),
+  ('22222222-0000-0000-0000-000000000002', 'Monthly Plan', 'monthly', 4, 0, 0, 'Pay per dish for a month. Fresh food delivered every week for 4 weeks.', true),
+  ('22222222-0000-0000-0000-000000000010', 'Weekly Package (6 items)', 'weekly', 1, 6, 57000, 'Pick any 6 dishes from this week''s menu for one flat weekly price.', true),
+  ('22222222-0000-0000-0000-000000000011', 'Monthly Package (6 items/week)', 'monthly', 4, 6, 228000, 'Pick 6 dishes each week, delivered every week for a month. Best value.', true);
 
 -- ---- WEEKLY MENU (one published menu for the current week) ----
 -- Dates are relative to "today" so the seed always shows a live, open menu.
