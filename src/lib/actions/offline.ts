@@ -5,12 +5,12 @@ import { createServiceClient } from "@/lib/supabase/server";
 export interface OfflineInput {
   full_name: string;
   phone: string;
+  passport_no: string;
   nationality: string;
   city: string;
   address: string;
   zip_code: string;
   room_building: string;
-  delivery_day: string;
   special_note: string;
   weeklyMenuId: string;
   items: { foodItemId: string; quantity: number }[];
@@ -30,10 +30,10 @@ export async function saveOfflineSubscriber(input: OfflineInput): Promise<Offlin
 
   const supabase = createServiceClient();
 
-  // Load the published menu items (authoritative names + caps).
+  // Load the published menu (delivery date is fixed by us, from the menu).
   const { data: menu } = await supabase
     .from("weekly_menus")
-    .select("id")
+    .select("id, delivery_date")
     .eq("id", input.weeklyMenuId)
     .eq("status", "published")
     .maybeSingle();
@@ -68,12 +68,13 @@ export async function saveOfflineSubscriber(input: OfflineInput): Promise<Offlin
   const { error } = await supabase.from("offline_subscribers").insert({
     full_name: input.full_name.trim(),
     phone: input.phone.trim(),
+    passport_no: input.passport_no || null,
     nationality: input.nationality || null,
     city: input.city || null,
     address: input.address || null,
     zip_code: input.zip_code || null,
     room_building: input.room_building || null,
-    delivery_day: input.delivery_day || null,
+    delivery_date: menu.delivery_date, // fixed by us
     item_summary,
     items: lines.map((l) => ({ name: l.name, quantity: l.quantity })),
     special_note: input.special_note || null,

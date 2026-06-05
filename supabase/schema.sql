@@ -363,12 +363,14 @@ create table public.offline_subscribers (
   id             uuid primary key default gen_random_uuid(),
   full_name      text not null,
   phone          text,
+  passport_no    text,
   nationality    text,
   city           text,
   address        text,
   zip_code       text,
   room_building  text,
-  delivery_day   text,
+  delivery_day   text,                                  -- (legacy, unused)
+  delivery_date  date,                                  -- fixed from the weekly menu
   item_summary   text,                                  -- "Beef Curry x1, Daal x2"
   items          jsonb,                                 -- [{name, quantity}]
   special_note   text,

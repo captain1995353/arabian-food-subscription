@@ -7,7 +7,6 @@ import { saveOfflineSubscriber, type OfflineInput } from "@/lib/actions/offline"
 import { Message } from "@/components/ui/Toast";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
-import { PREFERRED_DAYS } from "@/lib/validations";
 import type { WeeklyMenuItem } from "@/lib/types";
 
 const TARGET = 6; // weekly package size
@@ -20,8 +19,8 @@ export function OfflineForm({
   items: WeeklyMenuItem[];
 }) {
   const [form, setForm] = useState({
-    full_name: "", phone: "", nationality: "", city: "",
-    address: "", zip_code: "", room_building: "", delivery_day: "Saturday", special_note: "",
+    full_name: "", phone: "", passport_no: "", nationality: "", city: "",
+    address: "", zip_code: "", room_building: "", special_note: "",
   });
   const [qty, setQty] = useState<Record<string, number>>({});
   const [error, setError] = useState("");
@@ -67,20 +66,15 @@ export function OfflineForm({
         <div className="grid gap-4 sm:grid-cols-2">
           <div><label>Full name *</label><input value={form.full_name} onChange={(e) => set("full_name", e.target.value)} required /></div>
           <div><label>Phone *</label><input value={form.phone} onChange={(e) => set("phone", e.target.value)} required /></div>
+          <div><label>Passport number</label><input value={form.passport_no} onChange={(e) => set("passport_no", e.target.value)} /></div>
           <div><label>Nationality</label><input value={form.nationality} onChange={(e) => set("nationality", e.target.value)} /></div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
           <div><label>City in Korea</label><input value={form.city} onChange={(e) => set("city", e.target.value)} /></div>
+          <div><label>Zip code</label><input value={form.zip_code} onChange={(e) => set("zip_code", e.target.value)} /></div>
         </div>
         <div><label>Full delivery address</label><input value={form.address} onChange={(e) => set("address", e.target.value)} /></div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div><label>Zip code</label><input value={form.zip_code} onChange={(e) => set("zip_code", e.target.value)} /></div>
-          <div><label>Room / building</label><input value={form.room_building} onChange={(e) => set("room_building", e.target.value)} /></div>
-          <div>
-            <label>Delivery day</label>
-            <select value={form.delivery_day} onChange={(e) => set("delivery_day", e.target.value)}>
-              {PREFERRED_DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </div>
-        </div>
+        <div><label>Room / building</label><input value={form.room_building} onChange={(e) => set("room_building", e.target.value)} /></div>
         <div><label>Allergy / special note</label><textarea rows={2} value={form.special_note} onChange={(e) => set("special_note", e.target.value)} /></div>
       </div>
 

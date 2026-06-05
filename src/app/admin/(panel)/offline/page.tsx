@@ -34,9 +34,10 @@ export default async function AdminOfflinePage() {
               <th className="p-3">Date</th>
               <th className="p-3">Name</th>
               <th className="p-3">Phone</th>
+              <th className="p-3">Passport</th>
               <th className="p-3">City</th>
               <th className="p-3">Address</th>
-              <th className="p-3">Day</th>
+              <th className="p-3">Delivery</th>
               <th className="p-3">Items</th>
               <th className="p-3">Note</th>
             </tr>
@@ -47,9 +48,10 @@ export default async function AdminOfflinePage() {
                 <td className="p-3 whitespace-nowrap">{formatDate(r.created_at)}</td>
                 <td className="p-3 font-medium">{r.full_name}</td>
                 <td className="p-3 whitespace-nowrap">{r.phone}</td>
+                <td className="p-3">{r.passport_no ?? "—"}</td>
                 <td className="p-3">{r.city ?? "—"}</td>
                 <td className="p-3">{[r.address, r.room_building, r.zip_code].filter(Boolean).join(", ") || "—"}</td>
-                <td className="p-3">{r.delivery_day ?? "—"}</td>
+                <td className="p-3 whitespace-nowrap">{r.delivery_date ? formatDate(r.delivery_date) : "—"}</td>
                 <td className="p-3">{r.item_summary ?? "—"}</td>
                 <td className="p-3 text-ink-muted">{r.special_note ?? "—"}</td>
               </tr>

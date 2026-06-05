@@ -13,8 +13,8 @@ export async function GET() {
   const rows = (data as OfflineSubscriber[]) ?? [];
 
   const headers = [
-    "Date", "Name", "Phone", "Nationality", "City", "Address",
-    "Zip", "Room/Building", "Delivery Day", "Items", "Note",
+    "Submitted", "Name", "Phone", "Passport No", "Nationality", "City", "Address",
+    "Zip", "Room/Building", "Delivery Date", "Items", "Note",
   ];
 
   const esc = (v: unknown) => {
@@ -29,12 +29,13 @@ export async function GET() {
         new Date(r.created_at).toISOString().slice(0, 10),
         r.full_name,
         r.phone,
+        r.passport_no,
         r.nationality,
         r.city,
         r.address,
         r.zip_code,
         r.room_building,
-        r.delivery_day,
+        r.delivery_date,
         r.item_summary,
         r.special_note,
       ].map(esc).join(",")
