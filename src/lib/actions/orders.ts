@@ -64,15 +64,22 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
 
   const { data: menuItems } = await supabase
     .from("weekly_menu_items")
-    .select("food_item_id, price, available_quantity, food_item:food_items(name)")
+    .select("food_item_id, price, available_quantity, food_item:food_items(name, package_required, max_per_week)")
     .eq("weekly_menu_id", menu.id);
 
   const priceMap = new Map(
     (menuItems ?? []).map((m: any) => [
       m.food_item_id,
-      { price: Number(m.price), name: m.food_item?.name ?? "Item", stock: m.available_quantity },
+      {
+        price: Number(m.price),
+        name: m.food_item?.name ?? "Item",
+        stock: m.available_quantity,
+        required: !!m.food_item?.package_required,
+        max: Number(m.food_item?.max_per_week ?? 0),
+      },
     ])
   );
+  const requiredIds = [...priceMap.entries()].filter(([, v]) => v.required).map(([id]) => id);
 
   // 2. Resolve the chosen plan/package (authoritative for weeks + pricing).
   const { data: plan } = await supabase
@@ -113,9 +120,25 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
   const weekTotals: number[] = [];
   for (const lines of weekLines) {
     const qty = lines.reduce((s, l) => s + l.quantity, 0);
+
+    // Per-item max-per-week cap (applies to all plans).
+    for (const l of lines) {
+      const max = priceMap.get(l.food_item_id)?.max ?? 0;
+      if (max > 0 && l.quantity > max) {
+        return { error: `"${l.name}" can be selected at most ${max} time(s) per week.` };
+      }
+    }
+
     if (itemCount > 0) {
       if (qty !== itemCount) {
         return { error: `This package needs exactly ${itemCount} items per week.` };
+      }
+      // Required (locked) items must be present in every package week.
+      for (const rid of requiredIds) {
+        if (!lines.some((l) => l.food_item_id === rid)) {
+          const name = priceMap.get(rid)?.name ?? "a required item";
+          return { error: `"${name}" must be included in every week of this package.` };
+        }
       }
       weekTotals.push(Number(plan.base_price));
     } else {

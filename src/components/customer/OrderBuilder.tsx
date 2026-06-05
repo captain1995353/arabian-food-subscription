@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Minus, Plus, Check, Copy } from "lucide-react";
@@ -60,6 +60,31 @@ export function OrderBuilder({ menu, items, plans, defaultPlanId, prefill }: Pro
     return t;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qty, weeks, planId]);
+
+  const maxOf = (id: string) => Number(items.find((i) => i.food_item_id === id)?.food_item?.max_per_week ?? 0);
+  const isRequired = (id: string) =>
+    isPackage && !!items.find((i) => i.food_item_id === id)?.food_item?.package_required;
+
+  // Auto-include required items (locked at qty 1) for every week of a package.
+  useEffect(() => {
+    if (!isPackage) return;
+    setQty((q) => {
+      let changed = false;
+      const next: WeekQty = { ...q };
+      for (let w = 0; w < weeks; w++) {
+        const wk = { ...(next[w] ?? {}) };
+        for (const it of items) {
+          if (it.food_item?.package_required && !(wk[it.food_item_id] > 0)) {
+            wk[it.food_item_id] = 1;
+            changed = true;
+          }
+        }
+        next[w] = wk;
+      }
+      return changed ? next : q;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planId, isPackage, weeks]);
 
   const weekValid = (w: number) => (isPackage ? weekQtyTotal(w) === itemCount : weekQtyTotal(w) > 0);
   const allWeeksValid = Array.from({ length: weeks }, (_, w) => weekValid(w)).every(Boolean);
@@ -185,14 +210,23 @@ export function OrderBuilder({ menu, items, plans, defaultPlanId, prefill }: Pro
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((it) => {
               const f = it.food_item!;
-              const count = weekMap(activeWeek)[it.food_item_id] ?? 0;
+              const id = it.food_item_id;
+              const count = weekMap(activeWeek)[id] ?? 0;
               const sold = it.available_quantity <= 0;
-              const atLimit = isPackage && weekQtyTotal(activeWeek) >= itemCount && count === 0;
+              const max = maxOf(id);
+              const required = isRequired(id);
+              const weekFull = isPackage && weekQtyTotal(activeWeek) >= itemCount;
+              const atItemCap = max > 0 && count >= max;
+              const canInc = !weekFull && !atItemCap;
+              const canDec = required ? count > 1 : count > 0; // required locked at min 1
               return (
                 <div key={it.id} className="card flex flex-col overflow-hidden p-0">
                   <div className="relative h-36">
                     {f.image_url ? <Image src={f.image_url} alt={f.name} fill className="object-cover" /> : <div className="h-full bg-bg-surface" />}
-                    {f.is_halal && <Badge className="absolute left-2 top-2 bg-teal text-white">Halal</Badge>}
+                    <div className="absolute left-2 top-2 flex gap-1.5">
+                      {f.is_halal && <Badge className="bg-teal text-white">Halal</Badge>}
+                      {required && <span className="badge border-gold/40 bg-gold text-bg">Always included</span>}
+                    </div>
                   </div>
                   <div className="flex flex-1 flex-col p-4">
                     <div className="flex justify-between gap-2">
@@ -200,26 +234,23 @@ export function OrderBuilder({ menu, items, plans, defaultPlanId, prefill }: Pro
                       <span className="font-display text-sm font-bold text-gold">{formatKRW(it.price)}</span>
                     </div>
                     <p className="mt-1 line-clamp-2 text-xs text-ink-muted">{f.description}</p>
+                    {max > 0 && <p className="mt-1 text-xs text-ink-muted">Max {max} per week</p>}
                     <div className="mt-3 flex items-center justify-between">
                       {sold ? (
                         <span className="text-xs text-spice">Sold out</span>
                       ) : count === 0 ? (
                         <button
-                          disabled={atLimit}
-                          onClick={() => setItemQty(activeWeek, it.food_item_id, 1)}
-                          className={cn("btn w-full py-1.5 text-xs", atLimit ? "btn-outline opacity-40" : "btn-outline")}
+                          disabled={!canInc}
+                          onClick={() => setItemQty(activeWeek, id, 1)}
+                          className={cn("btn btn-outline w-full py-1.5 text-xs", !canInc && "opacity-40")}
                         >
-                          {atLimit ? `Limit ${itemCount}` : "Add"}
+                          {weekFull ? `Limit ${itemCount}` : "Add"}
                         </button>
                       ) : (
                         <div className="flex w-full items-center justify-between rounded-full border border-gold/40 px-1">
-                          <button onClick={() => setItemQty(activeWeek, it.food_item_id, count - 1)} className="p-1.5 text-gold"><Minus size={14} /></button>
-                          <span className="text-sm font-semibold">{count}</span>
-                          <button
-                            disabled={isPackage && weekQtyTotal(activeWeek) >= itemCount}
-                            onClick={() => setItemQty(activeWeek, it.food_item_id, count + 1)}
-                            className="p-1.5 text-gold disabled:opacity-30"
-                          ><Plus size={14} /></button>
+                          <button disabled={!canDec} onClick={() => setItemQty(activeWeek, id, count - 1)} className="p-1.5 text-gold disabled:opacity-30"><Minus size={14} /></button>
+                          <span className="text-sm font-semibold">{count}{required && <span className="ml-1 text-[10px] text-ink-muted">locked</span>}</span>
+                          <button disabled={!canInc} onClick={() => setItemQty(activeWeek, id, count + 1)} className="p-1.5 text-gold disabled:opacity-30"><Plus size={14} /></button>
                         </div>
                       )}
                     </div>

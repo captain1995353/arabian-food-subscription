@@ -157,7 +157,12 @@ function FoodForm({ item, onDone }: { item: FoodItem | null; onDone: () => void 
           <label>Spicy level (0–5)</label>
           <input type="number" name="spicy_level" min={0} max={5} defaultValue={item?.spicy_level ?? 0} />
         </div>
-        <div className="flex items-end gap-6 pb-2">
+        <div>
+          <label>Max per week (0 = no limit)</label>
+          <input type="number" name="max_per_week" min={0} defaultValue={item?.max_per_week ?? 0} />
+          <p className="mt-1 text-xs text-ink-muted">Set 1 so it can be chosen only once (e.g. Beef Curry).</p>
+        </div>
+        <div className="flex flex-wrap items-end gap-6 pb-2">
           <label className="flex items-center gap-2">
             <input type="checkbox" name="is_halal" defaultChecked={item ? item.is_halal : true} className="h-4 w-4" />
             <span className="!mb-0">Halal</span>
@@ -165,6 +170,10 @@ function FoodForm({ item, onDone }: { item: FoodItem | null; onDone: () => void 
           <label className="flex items-center gap-2">
             <input type="checkbox" name="is_active" defaultChecked={item ? item.is_active : true} className="h-4 w-4" />
             <span className="!mb-0">Available</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" name="package_required" defaultChecked={item ? item.package_required : false} className="h-4 w-4" />
+            <span className="!mb-0">Required in every package (locked, can&apos;t be replaced)</span>
           </label>
         </div>
       </div>

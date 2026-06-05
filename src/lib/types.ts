@@ -86,6 +86,10 @@ export interface FoodItem {
   is_halal: boolean;
   spicy_level: number;
   available_quantity: number;
+  /** Always included & locked when ordering a package. */
+  package_required: boolean;
+  /** Max quantity allowed per delivery week (0 = no limit). */
+  max_per_week: number;
   is_active: boolean;
   created_at: string;
   updated_at: string;

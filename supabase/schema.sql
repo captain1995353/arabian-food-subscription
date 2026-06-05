@@ -124,6 +124,8 @@ create table public.food_items (
   is_halal     boolean not null default true,
   spicy_level  int not null default 0 check (spicy_level between 0 and 5),
   available_quantity int not null default 0,
+  package_required boolean not null default false,     -- always included & locked in packages
+  max_per_week int not null default 0,                 -- max qty per week (0 = no limit)
   is_active    boolean not null default true,         -- available / unavailable
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now()

@@ -55,6 +55,8 @@ export async function saveFoodItem(_prev: AdminState, formData: FormData): Promi
     is_halal: checkbox(formData, "is_halal"),
     spicy_level: Number(formData.get("spicy_level") || 0),
     available_quantity: Number(formData.get("available_quantity") || 0),
+    package_required: checkbox(formData, "package_required"),
+    max_per_week: Number(formData.get("max_per_week") || 0),
     is_active: checkbox(formData, "is_active"),
   };
   if (!payload.name) return { error: "Name is required." };
