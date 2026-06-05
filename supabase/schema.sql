@@ -354,6 +354,28 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
+-- ----------------------------------------------------------------------
+-- 13. OFFLINE SUBSCRIBERS
+--     Public, no-login form for offline/walk-in subscribers. They enter
+--     their details + pick the weekly 6 items; admin exports to Excel/CSV.
+-- ----------------------------------------------------------------------
+create table public.offline_subscribers (
+  id             uuid primary key default gen_random_uuid(),
+  full_name      text not null,
+  phone          text,
+  nationality    text,
+  city           text,
+  address        text,
+  zip_code       text,
+  room_building  text,
+  delivery_day   text,
+  item_summary   text,                                  -- "Beef Curry x1, Daal x2"
+  items          jsonb,                                 -- [{name, quantity}]
+  special_note   text,
+  weekly_menu_id uuid references public.weekly_menus(id) on delete set null,
+  created_at     timestamptz not null default now()
+);
+
 -- ======================================================================
 --  ROW LEVEL SECURITY
 -- ======================================================================
@@ -369,6 +391,7 @@ alter table public.order_items         enable row level security;
 alter table public.payments            enable row level security;
 alter table public.deliveries          enable row level security;
 alter table public.notifications       enable row level security;
+alter table public.offline_subscribers enable row level security;
 
 -- ---- PROFILES ----
 create policy "profiles_select_own_or_admin" on public.profiles
@@ -468,6 +491,10 @@ create policy "notifications_select_own_or_admin" on public.notifications
 create policy "notifications_update_own" on public.notifications
   for update using (customer_id = auth.uid()) with check (customer_id = auth.uid());
 create policy "notifications_admin_all" on public.notifications
+  for all using (public.is_admin()) with check (public.is_admin());
+
+-- ---- OFFLINE SUBSCRIBERS ----  (admin only; inserts done via service client)
+create policy "offline_admin_all" on public.offline_subscribers
   for all using (public.is_admin()) with check (public.is_admin());
 
 -- ======================================================================

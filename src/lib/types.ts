@@ -217,3 +217,20 @@ export interface Notification {
   is_read: boolean;
   created_at: string;
 }
+
+export interface OfflineSubscriber {
+  id: string;
+  full_name: string;
+  phone: string | null;
+  nationality: string | null;
+  city: string | null;
+  address: string | null;
+  zip_code: string | null;
+  room_building: string | null;
+  delivery_day: string | null;
+  item_summary: string | null;
+  items: { name: string; quantity: number }[] | null;
+  special_note: string | null;
+  weekly_menu_id: string | null;
+  created_at: string;
+}
