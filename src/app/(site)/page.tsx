@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Soup, CalendarCheck, Truck, ShieldCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { formatKRW } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import type { WeeklyMenuItem } from "@/lib/types";
 
@@ -114,7 +113,7 @@ export default async function HomePage() {
                   <div className="p-4">
                     <h3 className="font-semibold">{item.food_item?.name}</h3>
                     <div className="mt-2 flex items-center justify-between">
-                      <span className="font-display font-bold text-gold">{formatKRW(item.price)}</span>
+                      <span className="text-xs uppercase tracking-wide text-ink-muted">{item.food_item?.category}</span>
                       {item.food_item?.is_halal && <Badge>Halal</Badge>}
                     </div>
                   </div>

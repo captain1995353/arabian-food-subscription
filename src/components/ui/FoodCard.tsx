@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { formatKRW } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { SpiceLevel } from "@/components/ui/SpiceLevel";
 import type { FoodItem } from "@/lib/types";
@@ -20,8 +19,8 @@ export function FoodCard({
   stock?: number;
   footer?: React.ReactNode;
 }) {
-  const shownPrice = price ?? food.price;
   const shownStock = stock ?? food.available_quantity;
+  void price; // price intentionally not displayed (fixed-package pricing)
   return (
     <div className="card flex flex-col overflow-hidden p-0">
       <div className="relative h-44">
@@ -42,7 +41,6 @@ export function FoodCard({
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-semibold leading-tight">{food.name}</h3>
-          <span className="font-display font-bold text-gold">{formatKRW(shownPrice)}</span>
         </div>
         <p className="mt-1.5 line-clamp-2 text-sm text-ink-muted">{food.description}</p>
         <div className="mt-3 flex items-center justify-between">
