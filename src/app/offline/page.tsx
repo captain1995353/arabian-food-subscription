@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { createClient } from "@/lib/supabase/server";
-import { formatDate } from "@/lib/utils";
 import { OfflineForm } from "@/components/customer/OfflineForm";
 import type { WeeklyMenu, WeeklyMenuItem } from "@/lib/types";
 
@@ -54,7 +53,7 @@ export default async function OfflinePage() {
         ) : (
           <>
             <div className="mt-6 rounded-xl border border-gold/30 bg-bg-card p-4 text-center text-sm text-ink-secondary">
-              <strong className="text-gold">{(menu as WeeklyMenu).title}</strong> · delivery {formatDate((menu as WeeklyMenu).delivery_date)}
+              <strong className="text-gold">{(menu as WeeklyMenu).title}</strong>
             </div>
             <div className="mt-6">
               <OfflineForm menuId={(menu as WeeklyMenu).id} items={items} />
