@@ -26,7 +26,7 @@ export default async function AdminSettingsPage() {
           or wire them to a settings table later.
         </p>
         <ul className="mt-3 space-y-2 text-sm text-ink-secondary">
-          <li><strong className="text-gold">Bank transfer:</strong> Arabiana Food, Bank XXX, Account 000-0000-0000</li>
+          <li><strong className="text-gold">Bank transfer:</strong> Toss Bank · 1002-6091-5319 (Arabiana)</li>
           <li><strong className="text-gold">KakaoPay:</strong> @arabianfood</li>
           <li><strong className="text-gold">Cash:</strong> Pay the driver on delivery</li>
         </ul>

@@ -195,6 +195,7 @@ create table public.subscriptions (
   payment_status    public.payment_status not null default 'unpaid',
   delivery_status   public.delivery_status not null default 'scheduled',
   status            public.subscription_status not null default 'active',
+  receipt_url       text,                                -- customer-uploaded payment proof
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now()
 );

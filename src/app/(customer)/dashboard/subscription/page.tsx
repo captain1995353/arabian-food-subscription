@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatDate, formatKRW } from "@/lib/utils";
 import { StatusBadge } from "@/components/ui/Badge";
 import { SubscriptionActions } from "@/components/customer/SubscriptionActions";
+import { ReceiptUpload } from "@/components/customer/ReceiptUpload";
 import type { Order, Subscription } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -76,6 +77,17 @@ export default async function SubscriptionPage() {
                 </div>
               </div>
             )}
+
+            {/* Payment receipt */}
+            <div className="mt-5 rounded-xl border border-teal/15 bg-bg-surface p-4">
+              <p className="text-sm font-semibold text-ink-secondary">Payment</p>
+              <p className="mt-1 text-xs text-ink-muted">
+                Pay by Toss Bank · <span className="text-gold">1002-6091-5319</span> (Arabiana), then upload your receipt below.
+              </p>
+              <div className="mt-3">
+                <ReceiptUpload subscriptionId={sub.id} current={sub.receipt_url} paid={sub.payment_status === "paid"} />
+              </div>
+            </div>
 
             <div className="mt-5">
               <SubscriptionActions id={sub.id} status={sub.status} />

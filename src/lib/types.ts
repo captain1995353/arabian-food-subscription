@@ -144,6 +144,7 @@ export interface Subscription {
   payment_status: PaymentStatus;
   delivery_status: DeliveryStatus;
   status: SubscriptionStatus;
+  receipt_url: string | null;
   created_at: string;
   updated_at: string;
 }

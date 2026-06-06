@@ -64,6 +64,7 @@ export default async function AdminSubscriptionsPage({
               <th className="p-3">Period</th>
               <th className="p-3">Total</th>
               <th className="p-3">Payment</th>
+              <th className="p-3">Receipt</th>
               <th className="p-3">Status</th>
               <th className="p-3">Manage</th>
             </tr>
@@ -79,6 +80,13 @@ export default async function AdminSubscriptionsPage({
                 <td className="p-3">{formatDate(s.start_date)} – {formatDate(s.end_date)}</td>
                 <td className="p-3">{formatKRW(s.total_price)}</td>
                 <td className="p-3"><StatusBadge status={s.payment_status} /></td>
+                <td className="p-3">
+                  {s.receipt_url ? (
+                    <a href={s.receipt_url} target="_blank" rel="noreferrer" className="text-gold hover:underline">View</a>
+                  ) : (
+                    <span className="text-ink-muted">—</span>
+                  )}
+                </td>
                 <td className="p-3"><StatusBadge status={s.status} /></td>
                 <td className="p-3"><SubscriptionControls id={s.id} status={s.status} /></td>
               </tr>
