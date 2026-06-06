@@ -82,7 +82,7 @@ export default async function SubscriptionPage() {
             <div className="mt-5 rounded-xl border border-teal/15 bg-bg-surface p-4">
               <p className="text-sm font-semibold text-ink-secondary">Payment</p>
               <p className="mt-1 text-xs text-ink-muted">
-                Pay by Toss Bank · <span className="text-gold">1002-6091-5319</span> (Arabiana), then upload your receipt below.
+                Pay by Toss Bank · <span className="text-gold">1002-6091-5319</span> (UDDIN AZHAR), then upload your receipt below.
               </p>
               <div className="mt-3">
                 <ReceiptUpload subscriptionId={sub.id} current={sub.receipt_url} paid={sub.payment_status === "paid"} />

@@ -5,6 +5,7 @@ import { formatDate, formatKRW } from "@/lib/utils";
 import { StatusBadge } from "@/components/ui/Badge";
 import { Message } from "@/components/ui/Toast";
 import { ReceiptUpload } from "@/components/customer/ReceiptUpload";
+import { DeleteOrderButton } from "@/components/customer/DeleteOrderButton";
 import type { Order, OrderItem, Subscription } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -59,7 +60,7 @@ export default async function OrdersPage({
             <StatusBadge status={s.payment_status} />
           </div>
           <div className="mt-3 rounded-lg bg-bg-surface p-3 text-sm">
-            <p className="text-ink-secondary">Send the total by <strong className="text-gold">Toss Bank · 1002-6091-5319</strong> (Arabiana), then upload your receipt:</p>
+            <p className="text-ink-secondary">Send the total by <strong className="text-gold">Toss Bank · 1002-6091-5319</strong> (UDDIN AZHAR), then upload your receipt:</p>
             <div className="mt-3">
               <ReceiptUpload subscriptionId={s.id} current={s.receipt_url} paid={s.payment_status === "paid"} />
             </div>
@@ -103,6 +104,11 @@ export default async function OrdersPage({
             </div>
             {o.special_note && (
               <p className="mt-2 text-xs text-ink-muted">Note: {o.special_note}</p>
+            )}
+            {o.status !== "delivered" && o.status !== "out_for_delivery" && (
+              <div className="mt-3 flex justify-end border-t border-teal/10 pt-3">
+                <DeleteOrderButton orderId={o.id} />
+              </div>
             )}
           </div>
         ))

@@ -19,7 +19,7 @@ interface Props {
 }
 
 const PAYMENT_METHODS: { value: PaymentMethod; label: string; hint: string }[] = [
-  { value: "bank_transfer", label: "Bank Transfer", hint: "Toss Bank · 1002-6091-5319 (Arabiana). Transfer the total, then we confirm." },
+  { value: "bank_transfer", label: "Bank Transfer", hint: "Toss Bank · 1002-6091-5319 (UDDIN AZHAR). Transfer the total, then we confirm." },
   { value: "kakaopay", label: "KakaoPay", hint: "Send via KakaoPay to @arabianfood." },
   { value: "cash", label: "Cash on Delivery", hint: "Pay the driver in cash on delivery." },
 ];

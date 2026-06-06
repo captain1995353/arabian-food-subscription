@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { notify } from "@/lib/actions/notifications";
 import { addDays } from "@/lib/utils";
 import type { PaymentMethod, PlanType } from "@/lib/types";
@@ -231,6 +231,50 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
 
   revalidatePath("/dashboard");
   return { orderId: firstOrderId, subscriptionId: sub.id };
+}
+
+/**
+ * Customer deletes one of their orders. Blocked once it's out for delivery or
+ * delivered. If the order was the last one on its subscription, the (now empty)
+ * subscription and its payment records are removed too.
+ */
+export async function deleteOrder(orderId: string): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please log in." };
+
+  const { data: order } = await supabase
+    .from("orders")
+    .select("id, status, subscription_id, customer_id")
+    .eq("id", orderId)
+    .eq("customer_id", user.id)
+    .maybeSingle();
+  if (!order) return { error: "Order not found." };
+  if (order.status === "out_for_delivery" || order.status === "delivered") {
+    return { error: "This order is already on the way and can't be deleted." };
+  }
+
+  // Use the service client to delete (and tidy up) after the ownership check.
+  const svc = createServiceClient();
+  await svc.from("orders").delete().eq("id", orderId);
+
+  if (order.subscription_id) {
+    const { count } = await svc
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .eq("subscription_id", order.subscription_id);
+    if (!count) {
+      await svc.from("payments").delete().eq("subscription_id", order.subscription_id);
+      await svc.from("subscriptions").delete().eq("id", order.subscription_id);
+    }
+  }
+
+  revalidatePath("/dashboard/orders");
+  revalidatePath("/dashboard/subscription");
+  revalidatePath("/dashboard");
+  return {};
 }
 
 /** Customer pauses their subscription. */
