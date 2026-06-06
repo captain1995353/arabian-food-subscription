@@ -89,9 +89,8 @@ export default async function OrdersPage({
 
             <div className="mt-4 divide-y divide-teal/10">
               {o.order_items.map((it) => (
-                <div key={it.id} className="flex justify-between py-2 text-sm">
+                <div key={it.id} className="py-2 text-sm">
                   <span>{it.name} × {it.quantity}</span>
-                  <span className="text-ink-secondary">{formatKRW(it.line_total)}</span>
                 </div>
               ))}
             </div>
