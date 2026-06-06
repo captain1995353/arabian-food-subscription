@@ -4,8 +4,8 @@ export const metadata = { title: "Contact | Arabiana Food Subscription" };
 
 export default function ContactPage() {
   const items = [
-    { icon: Phone, label: "Phone", value: "+82 10-0000-0000" },
-    { icon: Mail, label: "Email", value: "hello@arabian.kr" },
+    { icon: Phone, label: "Phone", value: "063-715-2255" },
+    { icon: Mail, label: "Email", value: "info@itsarabiana.com" },
     { icon: MessageCircle, label: "KakaoTalk", value: "@arabianfood" },
     { icon: MapPin, label: "Service area", value: "Major cities across South Korea" },
   ];
