@@ -25,7 +25,7 @@ export default function AdminRegisterPage() {
           <form action={action} className="mt-6 space-y-4">
             <div>
               <label htmlFor="full_name">Full name</label>
-              <input id="full_name" name="full_name" required placeholder="e.g. Arabian Manager" />
+              <input id="full_name" name="full_name" required placeholder="e.g. Arabiana Manager" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>

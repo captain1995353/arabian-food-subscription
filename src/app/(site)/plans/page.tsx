@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatKRW } from "@/lib/utils";
 import type { SubscriptionPlan } from "@/lib/types";
 
-export const metadata = { title: "Subscription Plans | Arabian Food Subscription" };
+export const metadata = { title: "Subscription Plans | Arabiana Food Subscription" };
 
 export default async function PlansPage() {
   const supabase = await createClient();

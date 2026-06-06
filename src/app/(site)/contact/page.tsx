@@ -1,6 +1,6 @@
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 
-export const metadata = { title: "Contact | Arabian Food Subscription" };
+export const metadata = { title: "Contact | Arabiana Food Subscription" };
 
 export default function ContactPage() {
   const items = [

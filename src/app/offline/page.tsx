@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { OfflineForm } from "@/components/customer/OfflineForm";
 import type { WeeklyMenu, WeeklyMenuItem } from "@/lib/types";
 
-export const metadata = { title: "Weekly Order Form | Arabian Food" };
+export const metadata = { title: "Weekly Order Form | Arabiana Food" };
 export const dynamic = "force-dynamic";
 
 export default async function OfflinePage() {

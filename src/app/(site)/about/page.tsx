@@ -1,23 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata = { title: "About | Arabian Food Subscription" };
+export const metadata = { title: "About | Arabiana Food Subscription" };
 
 export default function AboutPage() {
   return (
     <div className="container-x py-16">
       <div className="text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-gold">Our story</p>
-        <h1 className="mt-2 text-4xl font-bold md:text-5xl">About Arabian</h1>
+        <h1 className="mt-2 text-4xl font-bold md:text-5xl">About Arabiana</h1>
       </div>
 
       <div className="mt-12 grid items-center gap-10 md:grid-cols-2">
         <div className="overflow-hidden rounded-2xl border border-teal/15">
-          <Image src="/inside.jpeg" alt="Arabian kitchen" width={800} height={600} className="h-full w-full object-cover" />
+          <Image src="/inside.jpeg" alt="Arabiana kitchen" width={800} height={600} className="h-full w-full object-cover" />
         </div>
         <div className="space-y-4 text-ink-secondary">
           <p className="text-lg text-ink">
-            <strong className="text-gold">Arabian</strong> started with a simple
+            <strong className="text-gold">Arabiana</strong> started with a simple
             idea: foreigners living in South Korea deserve honest, home-style
             halal food without the hassle of shopping and cooking every day.
           </p>
@@ -32,7 +32,7 @@ export default function AboutPage() {
             miss the taste of home. No contracts, no stress — pause or cancel any
             time.
           </p>
-          <Link href="/register" className="btn btn-gold mt-2">Join Arabian today</Link>
+          <Link href="/register" className="btn btn-gold mt-2">Join Arabiana today</Link>
         </div>
       </div>
 

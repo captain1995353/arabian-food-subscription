@@ -5,7 +5,7 @@ import { MenuBrowser } from "@/components/customer/MenuBrowser";
 import { Badge } from "@/components/ui/Badge";
 import type { WeeklyMenu, WeeklyMenuItem } from "@/lib/types";
 
-export const metadata = { title: "Weekly Menu | Arabian Food Subscription" };
+export const metadata = { title: "Weekly Menu | Arabiana Food Subscription" };
 export const dynamic = "force-dynamic";
 
 export default async function MenuPage() {

@@ -18,7 +18,7 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-ink-muted">
             <li><Link href="/menu" className="hover:text-gold">Weekly Menu</Link></li>
             <li><Link href="/plans" className="hover:text-gold">Subscription Plans</Link></li>
-            <li><Link href="/about" className="hover:text-gold">About Arabian</Link></li>
+            <li><Link href="/about" className="hover:text-gold">About Arabiana</Link></li>
             <li><Link href="/contact" className="hover:text-gold">Contact Us</Link></li>
           </ul>
         </div>
@@ -33,7 +33,7 @@ export function Footer() {
       </div>
       <div className="border-t border-teal/10">
         <div className="container-x flex flex-col items-center justify-between gap-2 py-4 text-xs text-ink-muted sm:flex-row">
-          <p>© {new Date().getFullYear()} Arabian Food Subscription. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Arabiana Food Subscription. All rights reserved.</p>
           <p>Halal • Fresh • Delivered weekly across Korea</p>
         </div>
       </div>
