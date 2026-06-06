@@ -12,15 +12,27 @@ export function formatKRW(amount: number | string | null | undefined): string {
   return "₩" + n.toLocaleString("en-US", { maximumFractionDigits: 0 });
 }
 
+// Pin to Korea time so server (UTC) and browser render identical strings —
+// otherwise dates mismatch and React throws a hydration error (#418).
+const TZ = "Asia/Seoul";
+
 /** Format an ISO date string as e.g. "Jun 2, 2026". */
 export function formatDate(value: string | Date | null | undefined): string {
   if (!value) return "—";
-  const d = typeof value === "string" ? new Date(value) : value;
+  // Date-only strings (yyyy-mm-dd) become UTC midnight; force noon so the
+  // Seoul-zone day never shifts.
+  const d =
+    typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)
+      ? new Date(value + "T12:00:00Z")
+      : typeof value === "string"
+      ? new Date(value)
+      : value;
   if (isNaN(d.getTime())) return "—";
   return d.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: TZ,
   });
 }
 
@@ -35,6 +47,7 @@ export function formatDateTime(value: string | Date | null | undefined): string 
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
+    timeZone: TZ,
   });
 }
 

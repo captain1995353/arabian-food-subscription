@@ -45,7 +45,7 @@ export function ReceiptUpload({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <input ref={ref} type="file" accept="image/*,.pdf" onChange={onFile} className="hidden" />
+      <input ref={ref} type="file" onChange={onFile} className="hidden" />
       <button onClick={() => ref.current?.click()} disabled={pending} className="btn btn-outline py-2 text-sm">
         {pending ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
         {pending ? "Uploading…" : url ? "Replace receipt" : "Submit payment receipt"}
