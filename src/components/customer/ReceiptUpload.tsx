@@ -25,9 +25,13 @@ export function ReceiptUpload({
     const fd = new FormData();
     fd.append("file", file);
     start(async () => {
-      const res = await uploadReceipt(subscriptionId, fd);
-      if (res.error) setErr(res.error);
-      else if (res.url) setUrl(res.url);
+      try {
+        const res = await uploadReceipt(subscriptionId, fd);
+        if (res.error) setErr(res.error);
+        else if (res.url) setUrl(res.url);
+      } catch {
+        setErr("Upload failed. Please try again.");
+      }
     });
   }
 
