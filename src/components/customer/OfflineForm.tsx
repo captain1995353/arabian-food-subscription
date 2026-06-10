@@ -49,17 +49,18 @@ export function OfflineForm({
       async (pos) => {
         try {
           const { latitude, longitude } = pos.coords;
-          // Exact pin — accurate for delivery. Only the zip code is filled.
+          // Exact pin — accurate for delivery. Address filled in Korean.
           setCoords({ lat: latitude, lng: longitude });
           try {
             const r = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ko`
             );
             const j = await r.json();
             const a = j.address ?? {};
+            if (j.display_name) setForm((f) => ({ ...f, address: j.display_name }));
             if (a.postcode) setForm((f) => ({ ...f, zip_code: a.postcode }));
           } catch {
-            /* zip lookup is best-effort; the pin is what matters */
+            /* lookup is best-effort; the pin is what matters */
           }
         } finally {
           setLocating(false);
@@ -161,6 +162,10 @@ export function OfflineForm({
           )}
         </div>
 
+        <div>
+          <label>주소 / Address (Korean)</label>
+          <input value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="한국어 주소 — 위치 버튼으로 자동입력되거나 직접 입력" dir="auto" />
+        </div>
         <div><label>Room / building</label><input value={form.room_building} onChange={(e) => set("room_building", e.target.value)} /></div>
         <div><label>Allergy / special note</label><textarea rows={2} value={form.special_note} onChange={(e) => set("special_note", e.target.value)} /></div>
       </div>
