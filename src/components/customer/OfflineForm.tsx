@@ -49,7 +49,7 @@ export function OfflineForm({
       async (pos) => {
         try {
           const { latitude, longitude } = pos.coords;
-          // Exact pin — accurate for delivery even if the text address isn't.
+          // Exact pin — accurate for delivery. Only the zip code is filled.
           setCoords({ lat: latitude, lng: longitude });
           try {
             const r = await fetch(
@@ -57,12 +57,9 @@ export function OfflineForm({
             );
             const j = await r.json();
             const a = j.address ?? {};
-            if (j.display_name) setForm((f) => ({ ...f, address: j.display_name }));
-            const city = a.city || a.town || a.county || a.state;
-            if (city) setForm((f) => ({ ...f, city }));
             if (a.postcode) setForm((f) => ({ ...f, zip_code: a.postcode }));
           } catch {
-            /* text lookup is best-effort; the pin is what matters */
+            /* zip lookup is best-effort; the pin is what matters */
           }
         } finally {
           setLocating(false);
@@ -142,28 +139,28 @@ export function OfflineForm({
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div><label>City in Korea</label><input value={form.city} onChange={(e) => set("city", e.target.value)} /></div>
-          <div><label>Zip code</label><input value={form.zip_code} onChange={(e) => set("zip_code", e.target.value)} /></div>
+          <div><label>Zip code</label><input value={form.zip_code} onChange={(e) => set("zip_code", e.target.value)} placeholder="Auto-filled from location" /></div>
         </div>
-        <div>
-          <div className="flex items-center justify-between">
-            <label>Full delivery address</label>
-            <button type="button" onClick={useMyLocation} disabled={locating}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-gold hover:underline disabled:opacity-50">
-              {locating ? <Loader2 size={13} className="animate-spin" /> : <MapPin size={13} />}
-              {locating ? "Locating…" : "Use my current location"}
-            </button>
-          </div>
-          <input value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="Tap 'Use my current location' or type your address" />
-          {coords && (
-            <p className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-teal-light">
-              <CheckCircle2 size={14} /> Exact location pinned for delivery.
+
+        {/* Location pin */}
+        <div className="rounded-lg border border-teal/15 bg-bg-surface p-3">
+          <button type="button" onClick={useMyLocation} disabled={locating}
+            className="btn btn-outline py-2 text-sm">
+            {locating ? <Loader2 size={14} className="animate-spin" /> : <MapPin size={14} />}
+            {locating ? "Locating…" : "Use my current location"}
+          </button>
+          {coords ? (
+            <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-teal-light">
+              <CheckCircle2 size={14} /> Location pinned for delivery.
               <a href={`https://map.kakao.com/link/map/Delivery,${coords.lat},${coords.lng}`} target="_blank" rel="noreferrer" className="text-gold underline">
                 Open in KakaoMap
               </a>
-              <span className="text-ink-muted">Please correct the address text + add room/floor if needed.</span>
             </p>
+          ) : (
+            <p className="mt-2 text-xs text-ink-muted">Tap to pin your exact location (allow location access). Best on your phone.</p>
           )}
         </div>
+
         <div><label>Room / building</label><input value={form.room_building} onChange={(e) => set("room_building", e.target.value)} /></div>
         <div><label>Allergy / special note</label><textarea rows={2} value={form.special_note} onChange={(e) => set("special_note", e.target.value)} /></div>
       </div>
