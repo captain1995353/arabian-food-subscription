@@ -233,6 +233,9 @@ export interface OfflineSubscriber {
   delivery_date: string | null;
   payment_amount: number | null;
   receipt_url: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  map_link: string | null;
   item_summary: string | null;
   items: { name: string; quantity: number }[] | null;
   special_note: string | null;

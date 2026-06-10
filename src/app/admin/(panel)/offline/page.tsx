@@ -52,7 +52,15 @@ export default async function AdminOfflinePage() {
                 <td className="p-3 whitespace-nowrap">{r.phone}</td>
                 <td className="p-3">{r.passport_no ?? "—"}</td>
                 <td className="p-3">{r.city ?? "—"}</td>
-                <td className="p-3">{[r.address, r.room_building, r.zip_code].filter(Boolean).join(", ") || "—"}</td>
+                <td className="p-3">
+                  {[r.address, r.room_building, r.zip_code].filter(Boolean).join(", ") || "—"}
+                  {r.map_link && (
+                    <>
+                      {" "}
+                      <a href={r.map_link} target="_blank" rel="noreferrer" className="text-gold hover:underline">📍 map</a>
+                    </>
+                  )}
+                </td>
                 <td className="p-3 whitespace-nowrap">{r.delivery_date ? formatDate(r.delivery_date) : "—"}</td>
                 <td className="p-3">{r.item_summary ?? "—"}</td>
                 <td className="p-3 whitespace-nowrap">{r.payment_amount != null ? formatKRW(r.payment_amount) : "—"}</td>

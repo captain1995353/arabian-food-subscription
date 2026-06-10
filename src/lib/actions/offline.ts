@@ -14,6 +14,9 @@ export interface OfflineInput {
   special_note: string;
   paymentAmount: number;
   receiptUrl: string;
+  latitude: number | null;
+  longitude: number | null;
+  mapLink: string;
   weeklyMenuId: string;
   items: { foodItemId: string; quantity: number }[];
 }
@@ -106,6 +109,9 @@ export async function saveOfflineSubscriber(input: OfflineInput): Promise<Offlin
     delivery_date: menu.delivery_date, // fixed by us
     payment_amount: input.paymentAmount > 0 ? input.paymentAmount : null,
     receipt_url: input.receiptUrl || null,
+    latitude: input.latitude,
+    longitude: input.longitude,
+    map_link: input.mapLink || null,
     item_summary,
     items: lines.map((l) => ({ name: l.name, quantity: l.quantity })),
     special_note: input.special_note || null,

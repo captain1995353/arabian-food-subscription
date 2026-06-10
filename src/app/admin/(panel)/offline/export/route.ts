@@ -25,6 +25,7 @@ export async function GET() {
   const headers = [
     "Submitted", "Name", "Phone", "Passport No", "Nationality", "City", "Address",
     "Zip", "Room/Building", "Delivery Date",
+    "Map Link",
     ...dishNames, // per-dish quantity columns
     "Total Items", "Items Summary", "Payment Amount", "Receipt URL", "Note",
   ];
@@ -49,6 +50,7 @@ export async function GET() {
         r.zip_code,
         r.room_building,
         r.delivery_date,
+        r.map_link,
         ...dishNames.map((n) => qtyFor(r, n)),
         totalItems,
         r.item_summary,

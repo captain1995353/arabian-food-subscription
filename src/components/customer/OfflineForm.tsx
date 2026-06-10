@@ -27,6 +27,7 @@ export function OfflineForm({
   const [receiptUrl, setReceiptUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [locating, setLocating] = useState(false);
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [pending, start] = useTransition();
@@ -48,17 +49,21 @@ export function OfflineForm({
       async (pos) => {
         try {
           const { latitude, longitude } = pos.coords;
-          const r = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`
-          );
-          const j = await r.json();
-          const a = j.address ?? {};
-          if (j.display_name) setForm((f) => ({ ...f, address: j.display_name }));
-          const city = a.city || a.town || a.county || a.state;
-          if (city) setForm((f) => ({ ...f, city }));
-          if (a.postcode) setForm((f) => ({ ...f, zip_code: a.postcode }));
-        } catch {
-          setError("Could not look up the address. Please type it manually.");
+          // Exact pin — accurate for delivery even if the text address isn't.
+          setCoords({ lat: latitude, lng: longitude });
+          try {
+            const r = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`
+            );
+            const j = await r.json();
+            const a = j.address ?? {};
+            if (j.display_name) setForm((f) => ({ ...f, address: j.display_name }));
+            const city = a.city || a.town || a.county || a.state;
+            if (city) setForm((f) => ({ ...f, city }));
+            if (a.postcode) setForm((f) => ({ ...f, zip_code: a.postcode }));
+          } catch {
+            /* text lookup is best-effort; the pin is what matters */
+          }
         } finally {
           setLocating(false);
         }
@@ -95,10 +100,14 @@ export function OfflineForm({
     setError("");
     if (!form.full_name.trim() || !form.phone.trim()) { setError("Name and phone are required."); return; }
     if (total !== TARGET) { setError(`Please select exactly ${TARGET} items (you have ${total}).`); return; }
+    const mapLink = coords ? `https://www.google.com/maps?q=${coords.lat},${coords.lng}` : "";
     const payload: OfflineInput = {
       ...form,
       paymentAmount: Number(amount) || 0,
       receiptUrl,
+      latitude: coords?.lat ?? null,
+      longitude: coords?.lng ?? null,
+      mapLink,
       weeklyMenuId: menuId,
       items: Object.entries(qty).filter(([, n]) => n > 0).map(([foodItemId, quantity]) => ({ foodItemId, quantity })),
     };
@@ -115,7 +124,7 @@ export function OfflineForm({
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal text-white"><Check /></div>
         <h2 className="mt-4 text-xl font-bold">Thank you, {form.full_name.split(" ")[0]}!</h2>
         <p className="mt-2 text-ink-secondary">Your weekly order is saved. We&apos;ll be in touch about delivery.</p>
-        <button onClick={() => { setDone(false); setQty({}); setAmount(""); setReceiptUrl(""); setForm({ ...form, special_note: "" }); }} className="btn btn-outline mt-5">Submit another</button>
+        <button onClick={() => { setDone(false); setQty({}); setAmount(""); setReceiptUrl(""); setCoords(null); setForm({ ...form, special_note: "" }); }} className="btn btn-outline mt-5">Submit another</button>
       </div>
     );
   }
@@ -145,6 +154,15 @@ export function OfflineForm({
             </button>
           </div>
           <input value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="Tap 'Use my current location' or type your address" />
+          {coords && (
+            <p className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-teal-light">
+              <CheckCircle2 size={14} /> Exact location pinned for delivery.
+              <a href={`https://www.google.com/maps?q=${coords.lat},${coords.lng}`} target="_blank" rel="noreferrer" className="text-gold underline">
+                Open map
+              </a>
+              <span className="text-ink-muted">Please correct the address text + add room/floor if needed.</span>
+            </p>
+          )}
         </div>
         <div><label>Room / building</label><input value={form.room_building} onChange={(e) => set("room_building", e.target.value)} /></div>
         <div><label>Allergy / special note</label><textarea rows={2} value={form.special_note} onChange={(e) => set("special_note", e.target.value)} /></div>
