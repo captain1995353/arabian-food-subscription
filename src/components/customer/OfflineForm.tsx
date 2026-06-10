@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
-import { Minus, Plus, Check, Upload, Loader2, CheckCircle2 } from "lucide-react";
+import { Minus, Plus, Check, Upload, Loader2, CheckCircle2, MapPin } from "lucide-react";
 import { saveOfflineSubscriber, uploadOfflineReceipt, type OfflineInput } from "@/lib/actions/offline";
 import { Message } from "@/components/ui/Toast";
 import { Badge } from "@/components/ui/Badge";
@@ -26,6 +26,7 @@ export function OfflineForm({
   const [amount, setAmount] = useState("");
   const [receiptUrl, setReceiptUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [locating, setLocating] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [pending, start] = useTransition();
@@ -34,6 +35,41 @@ export function OfflineForm({
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
   const maxOf = (id: string) => Number(items.find((i) => i.food_item_id === id)?.food_item?.max_per_week ?? 0);
   const total = Object.values(qty).reduce((a, b) => a + b, 0);
+
+  // Browser geolocation -> reverse-geocode (free OpenStreetMap) -> fill address.
+  function useMyLocation() {
+    setError("");
+    if (!("geolocation" in navigator)) {
+      setError("Location is not supported on this device. Please type your address.");
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const { latitude, longitude } = pos.coords;
+          const r = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`
+          );
+          const j = await r.json();
+          const a = j.address ?? {};
+          if (j.display_name) setForm((f) => ({ ...f, address: j.display_name }));
+          const city = a.city || a.town || a.county || a.state;
+          if (city) setForm((f) => ({ ...f, city }));
+          if (a.postcode) setForm((f) => ({ ...f, zip_code: a.postcode }));
+        } catch {
+          setError("Could not look up the address. Please type it manually.");
+        } finally {
+          setLocating(false);
+        }
+      },
+      () => {
+        setLocating(false);
+        setError("Couldn't get your location. Allow location access or type your address.");
+      },
+      { enableHighAccuracy: true, timeout: 15000 }
+    );
+  }
 
   function onReceipt(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -99,7 +135,17 @@ export function OfflineForm({
           <div><label>City in Korea</label><input value={form.city} onChange={(e) => set("city", e.target.value)} /></div>
           <div><label>Zip code</label><input value={form.zip_code} onChange={(e) => set("zip_code", e.target.value)} /></div>
         </div>
-        <div><label>Full delivery address</label><input value={form.address} onChange={(e) => set("address", e.target.value)} /></div>
+        <div>
+          <div className="flex items-center justify-between">
+            <label>Full delivery address</label>
+            <button type="button" onClick={useMyLocation} disabled={locating}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-gold hover:underline disabled:opacity-50">
+              {locating ? <Loader2 size={13} className="animate-spin" /> : <MapPin size={13} />}
+              {locating ? "Locating…" : "Use my current location"}
+            </button>
+          </div>
+          <input value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="Tap 'Use my current location' or type your address" />
+        </div>
         <div><label>Room / building</label><input value={form.room_building} onChange={(e) => set("room_building", e.target.value)} /></div>
         <div><label>Allergy / special note</label><textarea rows={2} value={form.special_note} onChange={(e) => set("special_note", e.target.value)} /></div>
       </div>
