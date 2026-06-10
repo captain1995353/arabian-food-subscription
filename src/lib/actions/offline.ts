@@ -12,11 +12,40 @@ export interface OfflineInput {
   zip_code: string;
   room_building: string;
   special_note: string;
+  paymentAmount: number;
+  receiptUrl: string;
   weeklyMenuId: string;
   items: { foodItemId: string; quantity: number }[];
 }
 
 export type OfflineResult = { error?: string; success?: boolean };
+
+/**
+ * Uploads an offline subscriber's payment receipt (public form, no login).
+ * Runs server-side with the service client, so it works without exposing any
+ * storage policy. Accepts any file type.
+ */
+export async function uploadOfflineReceipt(
+  formData: FormData
+): Promise<{ url?: string; error?: string }> {
+  try {
+    const file = formData.get("file") as File | null;
+    if (!file || file.size === 0) return { error: "Please choose a file." };
+    if (file.size > 8 * 1024 * 1024) return { error: "File too large (max 8MB)." };
+
+    const supabase = createServiceClient();
+    const ext = (file.name.split(".").pop() || "dat").toLowerCase();
+    const path = `offline/${Date.now()}-${Math.round(Math.random() * 1e6)}.${ext}`;
+    const { error } = await supabase.storage
+      .from("receipts")
+      .upload(path, file, { upsert: false, cacheControl: "3600" });
+    if (error) return { error: error.message };
+    const { data } = supabase.storage.from("receipts").getPublicUrl(path);
+    return { url: data.publicUrl };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Upload failed." };
+  }
+}
 
 /**
  * Saves an offline/walk-in subscriber's weekly order. Public (no login):
@@ -75,6 +104,8 @@ export async function saveOfflineSubscriber(input: OfflineInput): Promise<Offlin
     zip_code: input.zip_code || null,
     room_building: input.room_building || null,
     delivery_date: menu.delivery_date, // fixed by us
+    payment_amount: input.paymentAmount > 0 ? input.paymentAmount : null,
+    receipt_url: input.receiptUrl || null,
     item_summary,
     items: lines.map((l) => ({ name: l.name, quantity: l.quantity })),
     special_note: input.special_note || null,

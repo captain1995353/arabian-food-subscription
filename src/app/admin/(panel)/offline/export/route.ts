@@ -14,7 +14,7 @@ export async function GET() {
 
   const headers = [
     "Submitted", "Name", "Phone", "Passport No", "Nationality", "City", "Address",
-    "Zip", "Room/Building", "Delivery Date", "Items", "Note",
+    "Zip", "Room/Building", "Delivery Date", "Items", "Payment Amount", "Receipt URL", "Note",
   ];
 
   const esc = (v: unknown) => {
@@ -37,6 +37,8 @@ export async function GET() {
         r.room_building,
         r.delivery_date,
         r.item_summary,
+        r.payment_amount,
+        r.receipt_url,
         r.special_note,
       ].map(esc).join(",")
     ),

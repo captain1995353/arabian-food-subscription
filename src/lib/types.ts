@@ -231,6 +231,8 @@ export interface OfflineSubscriber {
   room_building: string | null;
   delivery_day: string | null;
   delivery_date: string | null;
+  payment_amount: number | null;
+  receipt_url: string | null;
   item_summary: string | null;
   items: { name: string; quantity: number }[] | null;
   special_note: string | null;

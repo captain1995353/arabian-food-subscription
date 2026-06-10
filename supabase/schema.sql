@@ -372,6 +372,8 @@ create table public.offline_subscribers (
   room_building  text,
   delivery_day   text,                                  -- (legacy, unused)
   delivery_date  date,                                  -- fixed from the weekly menu
+  payment_amount numeric(10,2),                          -- amount the subscriber paid
+  receipt_url    text,                                   -- uploaded payment proof
   item_summary   text,                                  -- "Beef Curry x1, Daal x2"
   items          jsonb,                                 -- [{name, quantity}]
   special_note   text,

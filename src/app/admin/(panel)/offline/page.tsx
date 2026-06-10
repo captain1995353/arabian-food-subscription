@@ -1,6 +1,6 @@
 import { Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatKRW } from "@/lib/utils";
 import type { OfflineSubscriber } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +39,8 @@ export default async function AdminOfflinePage() {
               <th className="p-3">Address</th>
               <th className="p-3">Delivery</th>
               <th className="p-3">Items</th>
+              <th className="p-3">Paid</th>
+              <th className="p-3">Receipt</th>
               <th className="p-3">Note</th>
             </tr>
           </thead>
@@ -53,6 +55,14 @@ export default async function AdminOfflinePage() {
                 <td className="p-3">{[r.address, r.room_building, r.zip_code].filter(Boolean).join(", ") || "—"}</td>
                 <td className="p-3 whitespace-nowrap">{r.delivery_date ? formatDate(r.delivery_date) : "—"}</td>
                 <td className="p-3">{r.item_summary ?? "—"}</td>
+                <td className="p-3 whitespace-nowrap">{r.payment_amount != null ? formatKRW(r.payment_amount) : "—"}</td>
+                <td className="p-3">
+                  {r.receipt_url ? (
+                    <a href={r.receipt_url} target="_blank" rel="noreferrer" className="text-gold hover:underline">View</a>
+                  ) : (
+                    <span className="text-ink-muted">—</span>
+                  )}
+                </td>
                 <td className="p-3 text-ink-muted">{r.special_note ?? "—"}</td>
               </tr>
             ))}
