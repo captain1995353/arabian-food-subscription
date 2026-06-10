@@ -100,7 +100,7 @@ export function OfflineForm({
     setError("");
     if (!form.full_name.trim() || !form.phone.trim()) { setError("Name and phone are required."); return; }
     if (total !== TARGET) { setError(`Please select exactly ${TARGET} items (you have ${total}).`); return; }
-    const mapLink = coords ? `https://www.google.com/maps?q=${coords.lat},${coords.lng}` : "";
+    const mapLink = coords ? `https://map.kakao.com/link/map/Delivery,${coords.lat},${coords.lng}` : "";
     const payload: OfflineInput = {
       ...form,
       paymentAmount: Number(amount) || 0,
@@ -157,8 +157,8 @@ export function OfflineForm({
           {coords && (
             <p className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-teal-light">
               <CheckCircle2 size={14} /> Exact location pinned for delivery.
-              <a href={`https://www.google.com/maps?q=${coords.lat},${coords.lng}`} target="_blank" rel="noreferrer" className="text-gold underline">
-                Open map
+              <a href={`https://map.kakao.com/link/map/Delivery,${coords.lat},${coords.lng}`} target="_blank" rel="noreferrer" className="text-gold underline">
+                Open in KakaoMap
               </a>
               <span className="text-ink-muted">Please correct the address text + add room/floor if needed.</span>
             </p>
