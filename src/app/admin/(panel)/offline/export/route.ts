@@ -12,9 +12,21 @@ export async function GET() {
     .order("created_at", { ascending: false });
   const rows = (data as OfflineSubscriber[]) ?? [];
 
+  // Collect every distinct dish across all submissions -> one column each,
+  // holding the quantity that customer chose (blank = none). Lets you total
+  // each dish for kitchen prep.
+  const dishNames = Array.from(
+    new Set(rows.flatMap((r) => (r.items ?? []).map((it) => it.name)))
+  ).sort();
+
+  const qtyFor = (r: OfflineSubscriber, name: string) =>
+    (r.items ?? []).find((it) => it.name === name)?.quantity ?? "";
+
   const headers = [
     "Submitted", "Name", "Phone", "Passport No", "Nationality", "City", "Address",
-    "Zip", "Room/Building", "Delivery Date", "Items", "Payment Amount", "Receipt URL", "Note",
+    "Zip", "Room/Building", "Delivery Date",
+    ...dishNames, // per-dish quantity columns
+    "Total Items", "Items Summary", "Payment Amount", "Receipt URL", "Note",
   ];
 
   const esc = (v: unknown) => {
@@ -24,8 +36,9 @@ export async function GET() {
 
   const lines = [
     headers.join(","),
-    ...rows.map((r) =>
-      [
+    ...rows.map((r) => {
+      const totalItems = (r.items ?? []).reduce((s, it) => s + it.quantity, 0);
+      return [
         new Date(r.created_at).toISOString().slice(0, 10),
         r.full_name,
         r.phone,
@@ -36,12 +49,14 @@ export async function GET() {
         r.zip_code,
         r.room_building,
         r.delivery_date,
+        ...dishNames.map((n) => qtyFor(r, n)),
+        totalItems,
         r.item_summary,
         r.payment_amount,
         r.receipt_url,
         r.special_note,
-      ].map(esc).join(",")
-    ),
+      ].map(esc).join(",");
+    }),
   ];
 
   // Prepend BOM so Excel reads UTF-8 (Korean/Bangla/Arabic) correctly.
