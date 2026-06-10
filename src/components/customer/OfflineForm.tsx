@@ -98,6 +98,8 @@ export function OfflineForm({
     setError("");
     if (!form.full_name.trim() || !form.phone.trim()) { setError("Name and phone are required."); return; }
     if (total !== TARGET) { setError(`Please select exactly ${TARGET} items (you have ${total}).`); return; }
+    if (!amount || Number(amount) <= 0) { setError("Please enter the payment amount."); return; }
+    if (!receiptUrl) { setError("Please upload your payment receipt."); return; }
     const mapLink = coords ? `https://map.kakao.com/link/map/Delivery,${coords.lat},${coords.lng}` : "";
     const payload: OfflineInput = {
       ...form,
@@ -246,8 +248,20 @@ export function OfflineForm({
 
       {error && <Message type="error">{error}</Message>}
 
-      <button onClick={submit} disabled={pending || total !== TARGET} className="btn btn-gold w-full py-3">
-        {pending ? "Saving…" : total === TARGET ? "Submit weekly order" : `Pick ${TARGET - total} more`}
+      <button
+        onClick={submit}
+        disabled={pending || total !== TARGET || !amount || Number(amount) <= 0 || !receiptUrl}
+        className="btn btn-gold w-full py-3"
+      >
+        {pending
+          ? "Saving…"
+          : total !== TARGET
+          ? `Pick ${TARGET - total} more`
+          : !amount || Number(amount) <= 0
+          ? "Enter payment amount"
+          : !receiptUrl
+          ? "Upload payment receipt"
+          : "Submit weekly order"}
       </button>
     </div>
   );
